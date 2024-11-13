@@ -1,0 +1,35 @@
+.main {
+  display: grid;
+  grid-template:
+    "nav nav nav" 30px
+    "vga vga uart" auto
+    "footer footer footer" 150px / 1fr 1fr 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+.nav {
+  grid-area: nav;
+  background-color: #f00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vga {
+  grid-area: vga;
+  background-color: #0f0;
+}
+
+.uart {
+  grid-area: uart;
+  background-color: #00f;
+}
+
+.footer {
+  grid-area: footer;
+  background-color: #ff0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

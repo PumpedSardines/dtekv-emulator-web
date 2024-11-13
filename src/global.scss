@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-hex-display-on: #f00;
+  --color-hex-display-off: #522;
+  --color-hex-display-background: #333;
+
+  --color-io-switch-on: #0f0;
+  --color-io-switch-off: #f00;
+  --color-io-switch-background: #777;
+  --color-io-switch-knob: #333;
+
+  --color-io-button-background: #777;
+  --color-io-button-inner-background: #333;
+  --color-io-button-inner-pressed: #555;
+  --color-io-button-hover: #999;
+
+  --color-button-hover: #777;
+
+  --color-text: #fff;
+
+  --color-background: #444;
+  --color-background-alt: #333;
+  --color-border: #222;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: sans-serif;
+}

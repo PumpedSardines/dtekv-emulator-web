@@ -1,0 +1,78 @@
+.hexDisplay {
+  width: 75px;
+  height: 150px;
+  background-color: var(--color-hex-display-background);
+  position: relative;
+}
+
+.hexSegment {
+  width: 10px;
+  height: 60px;
+  background-color: var(--color-hex-display-off);
+  position: absolute;
+  /* border-radius: 100px; */
+  clip-path: polygon(50% 0, 100% 10%, 100% 90%, 50% 100%, 0 90%, 0 10%);
+}
+
+.hexSegment.on {
+  background-color: var(--color-hex-display-on);
+}
+
+.hexSegment:nth-child(6) {
+  left: 5px;
+  top: 12.5px;
+}
+
+.hexSegment:nth-child(5) {
+  left: 5px;
+  top: 77.5px;
+}
+
+.hexSegment:nth-child(2) {
+  right: 5px;
+  top: 12.5px;
+}
+
+.hexSegment:nth-child(3) {
+  right: 5px;
+  top: 77.5px;
+}
+
+.hexSegment:nth-child(1),
+.hexSegment:nth-child(4),
+.hexSegment:nth-child(7) {
+  width: 55px;
+  height: 10px;
+
+  clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
+}
+
+.hexSegment:nth-child(1) {
+  left: 10px;
+  top: 7.5px;
+}
+
+.hexSegment:nth-child(7) {
+  left: 10px;
+  top: 70px;
+}
+
+.hexSegment:nth-child(4) {
+  left: 10px;
+  bottom: 7.5px;
+}
+
+.hexSegment:nth-child(8) {
+  width: 7.5px;
+  height: 7.5px;
+  right: 2.5px;
+  bottom: 2.5px;
+  clip-path: polygon(30% 0%,
+      70% 0%,
+      100% 30%,
+      100% 70%,
+      70% 100%,
+      30% 100%,
+      0% 70%,
+      0 30%);
+}
