@@ -1,4 +1,4 @@
-import styles from "./HexDisplay.module.scss";
+import styles from "./HexDisplay.module.css";
 import cx from "../../utils/cx";
 
 type HexDisplayProps = {

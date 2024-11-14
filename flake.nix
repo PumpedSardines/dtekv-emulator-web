@@ -23,6 +23,7 @@
           rustc = pkgs.rustc;
           lld = pkgs.lld;
           wasm-pack = pkgs.wasm-pack;
+          binaryen = pkgs.binaryen;
           cargo-generate = pkgs.cargo-generate;
         };
         devShell = pkgs.mkShell {
@@ -34,6 +35,7 @@
             clippy
             rustc
             lld
+            binaryen
             cargo-generate
           ];
         };

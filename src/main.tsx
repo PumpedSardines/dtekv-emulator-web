@@ -1,12 +1,14 @@
 import * as ReactDOM from "react-dom/client";
 
-import './global.scss';
+import "./global.css";
 import Emulator from "./pages/Emulator";
-
+import { CpuContextProvider } from "./contexts/CpuContext";
 
 const App = () => {
   return (
-    <Emulator />
+    <CpuContextProvider>
+      <Emulator />
+    </CpuContextProvider>
   );
 };
 

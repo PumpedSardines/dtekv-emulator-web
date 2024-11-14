@@ -6,22 +6,25 @@
   --color-hex-display-on: #f00;
   --color-hex-display-off: #522;
   --color-hex-display-background: #333;
+  --color-hex-display-gap-background: #444;
 
-  --color-io-switch-on: #0f0;
-  --color-io-switch-off: #f00;
+  --color-error-background: #a40;
+  --color-error-border: #a00;
+
   --color-io-switch-background: #777;
+  --color-io-switch-inner-background: #555;
   --color-io-switch-knob: #333;
 
   --color-io-button-background: #777;
-  --color-io-button-inner-background: #333;
-  --color-io-button-inner-pressed: #555;
-  --color-io-button-hover: #999;
+  --color-io-button-clickable-area-background: #333;
+  --color-io-button-clickable-area-pressed: #555;
+  --color-io-button-clickable-area-hover: #383838;
 
   --color-button-hover: #777;
 
   --color-text: #fff;
-
   --color-background: #444;
+  --color-background-hover: #555;
   --color-background-alt: #333;
   --color-border: #222;
 }

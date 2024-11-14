@@ -1,0 +1,18 @@
+.switches {
+  display: flex;
+  gap: 4px;
+  position: relative;
+}
+
+.switches p {
+  font-size: 14px;
+  color: var(--color-text);
+  position: absolute;
+  bottom: calc(-20px);
+  font-family: monospace;
+  left: 50%;
+  width: max-content;
+  transform: translateX(-50%);
+  white-space: pre;
+  margin: 0px;
+}

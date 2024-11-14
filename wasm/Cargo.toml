@@ -1,5 +1,5 @@
 [package]
-name = "dtekv_emulator"
+name = "dtekv_emulator_web"
 version = "0.1.0"
 edition = "2021"
 
@@ -11,13 +11,13 @@ crate-type = ["cdylib", "rlib"]
 default = ["console_error_panic_hook"]
 
 [dependencies]
-dtekv_emulator = { git = "https://github.com/PumpedSardines/dtekv-emulator-core", rev="a3bd981223f97ae113c7a61640fb8620c9e0c5cd" }
-wasm-bindgen = "0.2.84"
+dtekv_emulator_core = { git = "https://github.com/PumpedSardines/dtekv-emulator-core", rev="d0f7da0510cfcd289f2dda5aa5839c6b2a266fb2" }
+wasm-bindgen = "0.2.95"
 console_error_panic_hook = { version = "0.1.7", optional = true }
+web-sys = "0.3.72"
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.34"
 
 [profile.release]
-# Tell `rustc` to optimize for small code size.
-opt-level = "s"
+opt-level = 3

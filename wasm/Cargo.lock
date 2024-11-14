@@ -34,19 +34,20 @@ dependencies = [
 ]
 
 [[package]]
-name = "dtekv_emulator"
+name = "dtekv_emulator_core"
+version = "0.1.0"
+source = "git+https://github.com/PumpedSardines/dtekv-emulator-core?rev=d0f7da0510cfcd289f2dda5aa5839c6b2a266fb2#d0f7da0510cfcd289f2dda5aa5839c6b2a266fb2"
+
+[[package]]
+name = "dtekv_emulator_web"
 version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
- "dtekv_emulator 0.1.0 (git+https://github.com/PumpedSardines/dtekv-emulator-core?rev=a3bd981223f97ae113c7a61640fb8620c9e0c5cd)",
+ "dtekv_emulator_core",
  "wasm-bindgen",
  "wasm-bindgen-test",
+ "web-sys",
 ]
-
-[[package]]
-name = "dtekv_emulator"
-version = "0.1.0"
-source = "git+https://github.com/PumpedSardines/dtekv-emulator-core?rev=a3bd981223f97ae113c7a61640fb8620c9e0c5cd#a3bd981223f97ae113c7a61640fb8620c9e0c5cd"
 
 [[package]]
 name = "js-sys"

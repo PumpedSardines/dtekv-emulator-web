@@ -2,8 +2,17 @@ mod utils;
 
 use std::{cell::RefCell, rc::Rc};
 
-use dtekv_emulator::{cpu, io, Data};
+use dtekv_emulator_core::{
+    cpu,
+    io::{self, Interruptable},
+    Data,
+};
 use wasm_bindgen::prelude::*;
+mod vga_buffer;
+use vga_buffer::VgaBuffer;
+mod timer;
+use timer::Timer;
+use web_sys::js_sys::Uint8Array;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -14,6 +23,9 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 #[wasm_bindgen]
 extern "C" {
     fn alert(s: &str);
+
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
 }
 
 #[wasm_bindgen]
@@ -29,6 +41,9 @@ struct Cpu {
     sdram: Rc<RefCell<io::SDRam>>,
     hex_display: Rc<RefCell<io::HexDisplay>>,
     uart: Rc<RefCell<io::Uart>>,
+    vga_dma: Rc<RefCell<io::VgaDma>>,
+    vga_buffer: Rc<RefCell<VgaBuffer>>,
+    timer: Rc<RefCell<Timer>>,
 }
 
 #[wasm_bindgen]
@@ -41,12 +56,18 @@ impl Cpu {
         let sdram = Rc::new(RefCell::new(io::SDRam::new()));
         let hex_display = Rc::new(RefCell::new(io::HexDisplay::new()));
         let uart = Rc::new(RefCell::new(io::Uart::new()));
+        let vga_dma = Rc::new(RefCell::new(io::VgaDma::new()));
+        let vga_buffer = Rc::new(RefCell::new(VgaBuffer::new()));
+        let timer = Rc::new(RefCell::new(Timer::new()));
 
         bus.attach_device(switch.clone());
         bus.attach_device(button.clone());
         bus.attach_device(sdram.clone());
         bus.attach_device(hex_display.clone());
         bus.attach_device(uart.clone());
+        bus.attach_device(vga_dma.clone());
+        bus.attach_device(vga_buffer.clone());
+        bus.attach_device(timer.clone());
 
         let cpu = cpu::Cpu::new_with_bus(bus);
 
@@ -57,7 +78,21 @@ impl Cpu {
             sdram,
             hex_display,
             uart,
+            vga_dma,
+            vga_buffer,
+            timer,
         }
+    }
+
+    // To prevent memory leaks, we only work within one Cpu object, we let Rust take care of
+    // memory
+    pub fn set_to_new(&mut self) {
+        *self = Cpu::new();
+    }
+
+    pub fn get_vga_frame_buffer(&self) -> Uint8Array {
+        let vga = self.vga_buffer.borrow();
+        vga.buffer.clone()
     }
 
     pub fn get_pc(&self) -> u32 {
@@ -73,6 +108,7 @@ impl Cpu {
     }
 
     pub fn get_hex_display(&self, index: u32) -> u8 {
+        let vga_buffer = self.vga_buffer.borrow();
         self.hex_display.borrow().get(index)
     }
 
@@ -80,8 +116,27 @@ impl Cpu {
         self.button.borrow_mut().set(value);
     }
 
+    pub fn get_button(&self) -> bool {
+        self.button.borrow().get()
+    }
+
     pub fn load(&mut self, bin: Vec<u8>) {
         self.internal_cpu.bus.load_at(0, bin);
+    }
+
+    pub fn clock_timer(&mut self) {
+        self.timer.borrow_mut().clock();
+    }
+
+    pub fn flush_uart(&mut self) -> String {
+        let mut ret_str = String::new();
+        let mut uart = self.uart.borrow_mut();
+
+        while let Some(c) = uart.next() {
+            ret_str.push(c);
+        }
+
+        ret_str
     }
 
     pub fn reset(&mut self) {
@@ -90,8 +145,7 @@ impl Cpu {
     }
 
     pub fn handle_interrupt(&mut self) {
-        let cause = self.internal_cpu.bus.should_interrupt();
-        if let Some(cause) = cause {
+        if let Some(cause) = self.internal_cpu.bus.interrupt() {
             self.internal_cpu.external_interrupt(cause);
         }
     }

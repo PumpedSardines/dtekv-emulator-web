@@ -1,0 +1,52 @@
+.button {
+  all: unset;
+  display: block;
+  width: 100px;
+  height: 100px;
+  background-color: var(--color-io-button-background);
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.button:hover .innerButton {
+  background-color: var(--color-io-button-clickable-area-hover)
+}
+.button:active .innerButton {
+  background-color: var(--color-io-button-clickable-area-pressed);
+}
+
+.innerButton {
+  width: 80px;
+  height: 80px;
+  background-color: var(--color-io-button-clickable-area-background);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+
+.screw {
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-io-button-clickable-area-background);
+  position: absolute;
+  top: 12%;
+  left: 12%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.screw:nth-child(2) {
+  top: 12%;
+  left: 88%;
+}
+.screw:nth-child(3) {
+  top: 88%;
+  left: 88%;
+}
+.screw:nth-child(4) {
+  top: 88%;
+  left: 12%;
+}

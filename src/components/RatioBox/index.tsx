@@ -1,15 +1,24 @@
-import React, { useCallback, useEffect, useRef } from "react";
-import styles from "./RatioImageBox.module.scss";
+import React, { createContext, useCallback, useEffect, useRef } from "react";
+import styles from "./RatioBox.module.css";
 
 type RatioImageBoxProps = {
   width: number;
   height: number;
-  src: string;
+  children: React.ReactNode;
 };
+
+const RatioBoxContext = createContext<{ width: number; height: number }>({
+  width: 0,
+  height: 0,
+});
+
+export function useRatioBox() {
+  return React.useContext(RatioBoxContext);
+}
 
 function RatioImageBox(props: RatioImageBoxProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [imgSize, setImgSize] = React.useState({ width: 0, height: 0 });
+  const [size, setSize] = React.useState({ width: 0, height: 0 });
   const { width, height } = props;
 
   const updateImgSize = useCallback(() => {
@@ -20,8 +29,8 @@ function RatioImageBox(props: RatioImageBoxProps) {
     // Since the VGA display is exactly 320x240 and we don't want to render
     // any weird half pixels, we calculate exactly in steps the size needs to be
     // to fit the display.
-    let currentWidth = width / window.devicePixelRatio;
-    let currentHeight = height / window.devicePixelRatio;
+    let currentWidth = width;
+    let currentHeight = height;
 
     do {
       currentWidth += width;
@@ -29,7 +38,7 @@ function RatioImageBox(props: RatioImageBoxProps) {
     } while (currentWidth <= maxWidth && currentHeight <= maxHeight);
     currentWidth -= width;
     currentHeight -= height;
-    setImgSize({ width: currentWidth, height: currentHeight });
+    setSize({ width: currentWidth, height: currentHeight });
   }, [width, height]);
 
   useEffect(() => {
@@ -43,13 +52,14 @@ function RatioImageBox(props: RatioImageBoxProps) {
 
   return (
     <div ref={ref} className={styles["outer"]}>
-      <img
-        style={{ width: `${imgSize.width}px`, height: `${imgSize.height}px` }}
+      <div
         className={styles["inner"]}
-        src={props.src}
-        width={props.width}
-        height={props.height}
-      />
+        style={{ width: `${size.width}px`, height: `${size.height}px` }}
+      >
+        <RatioBoxContext.Provider value={size}>
+          {props.children}
+        </RatioBoxContext.Provider>
+      </div>
     </div>
   );
 }

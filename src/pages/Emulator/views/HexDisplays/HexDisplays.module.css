@@ -1,0 +1,5 @@
+.hex-displays {
+  display: flex;
+  background-color: var(--color-background);
+  gap: 4px;
+}

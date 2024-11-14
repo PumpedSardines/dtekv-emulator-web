@@ -1,0 +1,19 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.root h1 {
+  margin: 0;
+  margin-bottom: 12px;
+}
+
+.root p {
+  margin: 0;
+  max-width: 500px;
+  text-align: center;
+}
