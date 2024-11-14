@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Emulator.module.css";
 import RatioBox from "../../components/RatioBox";
 import { useCpuContext } from "../../contexts/CpuContext";
