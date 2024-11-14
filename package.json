@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "dtekv_emulator": "file:wasm/pkg",
+    "dtekv_emulator_web": "file:wasm/pkg",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "vite-plugin-top-level-await": "^1.4.4",
