@@ -1,0 +1,17 @@
+{
+  "name": "dtekv_emulator_web",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "dtekv_emulator_web_bg.wasm",
+    "dtekv_emulator_web.js",
+    "dtekv_emulator_web_bg.js",
+    "dtekv_emulator_web.d.ts"
+  ],
+  "main": "dtekv_emulator_web.js",
+  "types": "dtekv_emulator_web.d.ts",
+  "sideEffects": [
+    "./dtekv_emulator_web.js",
+    "./snippets/*"
+  ]
+}
