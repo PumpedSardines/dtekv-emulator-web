@@ -4,7 +4,7 @@ use std::{cell::RefCell, rc::Rc};
 
 use dtekv_emulator_core::{
     cpu,
-    io::{self, Interruptable},
+    io::{self, Device, Interruptable},
     Data,
 };
 use wasm_bindgen::prelude::*;
@@ -57,7 +57,7 @@ impl Cpu {
         let hex_display = Rc::new(RefCell::new(io::HexDisplay::new()));
         let uart = Rc::new(RefCell::new(io::Uart::new()));
         let vga_dma = Rc::new(RefCell::new(io::VgaDma::new()));
-        let vga_buffer = Rc::new(RefCell::new(VgaBuffer::new()));
+        let vga_buffer = Rc::new(RefCell::new(VgaBuffer::new(vga_dma.clone())));
         let timer = Rc::new(RefCell::new(Timer::new()));
 
         bus.attach_device(switch.clone());
@@ -91,8 +91,13 @@ impl Cpu {
     }
 
     pub fn get_vga_frame_buffer(&self) -> Uint8Array {
+        let mut vga = self.vga_buffer.borrow_mut();
+        vga.get()
+    }
+
+    pub fn did_vga_frame_buffer_update(&self) -> bool {
         let vga = self.vga_buffer.borrow();
-        vga.buffer.clone()
+        vga.should_update()
     }
 
     pub fn get_pc(&self) -> u32 {
@@ -108,7 +113,6 @@ impl Cpu {
     }
 
     pub fn get_hex_display(&self, index: u32) -> u8 {
-        let vga_buffer = self.vga_buffer.borrow();
         self.hex_display.borrow().get(index)
     }
 
@@ -122,10 +126,6 @@ impl Cpu {
 
     pub fn load(&mut self, bin: Vec<u8>) {
         self.internal_cpu.bus.load_at(0, bin);
-    }
-
-    pub fn clock_timer(&mut self) {
-        self.timer.borrow_mut().clock();
     }
 
     pub fn flush_uart(&mut self) -> String {
@@ -159,5 +159,6 @@ impl Cpu {
         for _ in 0..cycles {
             self.internal_cpu.clock();
         }
+        self.internal_cpu.bus.clock();
     }
 }

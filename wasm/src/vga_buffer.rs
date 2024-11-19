@@ -1,3 +1,5 @@
+use std::{cell::RefCell, rc::Rc};
+
 use dtekv_emulator_core::{io, Data};
 use web_sys::js_sys::Uint8Array;
 
@@ -6,14 +8,42 @@ pub const VGA_BUFFER_HIGHER_ADDR: u32 = 0x80257ff;
 
 pub struct VgaBuffer {
     pub buffer: Uint8Array,
+    pub last_buffer_index: u32,
+    pub dma: Rc<RefCell<io::VgaDma>>,
 }
 
 impl VgaBuffer {
     /// Returns a new Memory object with a given size all set to 0
-    pub fn new() -> Self {
+    pub fn new(dma: Rc<RefCell<io::VgaDma>>) -> Self {
         VgaBuffer {
-            buffer: Uint8Array::new_with_length(320 * 240 * 3),
+            // One for each color channel
+            // Framebuffer
+            // Backbuffer
+            // Extra space
+            buffer: Uint8Array::new_with_length(320 * 240 * 3 * 3),
+            last_buffer_index: VGA_BUFFER_LOWER_ADDR,
+            dma,
         }
+    }
+
+    pub fn get(&mut self) -> Uint8Array {
+        let buffer = match self.dma.borrow().get_buffer() {
+            // If less than 0x8000000, it's the first buffer
+            buffer if buffer < VGA_BUFFER_LOWER_ADDR => VGA_BUFFER_LOWER_ADDR,
+            buffer if buffer > VGA_BUFFER_HIGHER_ADDR => VGA_BUFFER_HIGHER_ADDR,
+            buffer => buffer,
+        };
+
+        self.last_buffer_index = buffer;
+
+        let start = (buffer - VGA_BUFFER_LOWER_ADDR) * 3;
+        let end = start + 320 * 240 * 3;
+
+        self.buffer.subarray(start, end)
+    }
+
+    pub fn should_update(&self) -> bool {
+        self.dma.borrow().get_buffer() != self.last_buffer_index
     }
 
     pub fn to_color(&self, pixel: u8) -> (u8, u8, u8) {
@@ -22,20 +52,6 @@ impl VgaBuffer {
         let blue = pixel & 0b00000011;
 
         ((red >> 5) * 32, (green >> 2) * 32, blue * 85)
-    }
-
-    pub fn get_pixel(&self, x: u32, y: u32) -> (u8, u8, u8) {
-        let x = x;
-        let y = y;
-        let x = x * 3;
-        let y = y * 320 * 3;
-        let addr = x + y;
-        let addr = addr;
-        (
-            self.buffer.get_index(addr),
-            self.buffer.get_index(addr + 1),
-            self.buffer.get_index(addr + 2),
-        )
     }
 }
 
@@ -54,16 +70,18 @@ impl io::Interruptable for VgaBuffer {
 }
 
 impl Data<()> for VgaBuffer {
-    fn load_byte(&self, _addr: u32) -> Result<u8, ()> {
-        // Hard wired to 0
-        Ok(0)
+    fn load_byte(&self, addr: u32) -> Result<u8, ()> {
+        let addr = addr - VGA_BUFFER_LOWER_ADDR;
+        let addr = addr * 3;
+        let red = self.buffer.get_index(addr);
+        let green = self.buffer.get_index(addr + 1);
+        let blue = self.buffer.get_index(addr + 2);
+        let color = (red / 32) << 5 | (green / 32) << 2 | (blue / 85);
+        Ok(color)
     }
 
     fn store_byte(&mut self, addr: u32, byte: u8) -> Result<(), ()> {
         let addr = addr - VGA_BUFFER_LOWER_ADDR;
-        if addr >= self.buffer.length() as u32 {
-            return Err(());
-        }
         let addr = addr * 3;
         let (red, green, blue) = self.to_color(byte);
         self.buffer.set_index(addr, red);

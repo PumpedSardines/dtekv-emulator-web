@@ -11,6 +11,9 @@ const examples = {
   games: fetch("/games.bin")
     .then((res) => res.arrayBuffer())
     .then((buf) => new Uint8Array(buf)),
+  bufferSwap: fetch("/buffer_swap.bin") 
+    .then((res) => res.arrayBuffer())
+    .then((buf) => new Uint8Array(buf)),
 };
 
 function Nav() {
@@ -84,6 +87,14 @@ function Nav() {
             }}
           >
             Games
+          </a>
+          <a
+            onClick={async () => {
+              setExampleButtonActive(false);
+              loadBin(await examples.bufferSwap);
+            }}
+          >
+            Buffer swap
           </a>
         </div>
       </div>

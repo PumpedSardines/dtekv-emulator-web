@@ -47,17 +47,6 @@ impl Timer {
         self.period_duration = ((self.period as u64) * 1_000) / cpu::CLOCK_FEQ as u64;
     }
 
-    pub fn clock(&mut self) {
-        if self.running {
-            let elapsed = web_sys::js_sys::Date::new_0().get_time() as u64
-                - self.clock_start.get_time() as u64;
-            if elapsed >= self.period_duration {
-                self.time_out = true;
-                self.clock_start = web_sys::js_sys::Date::new_0();
-            }
-        }
-    }
-
     pub fn should_interrupt(&self) -> bool {
         self.time_out && self.irq
     }
@@ -70,13 +59,15 @@ impl io::Device<()> for Timer {
 
     fn clock(&mut self) {
         if self.running {
-            // let elapsed = self.clock_start.elapsed();
-            // if elapsed >= self.period_duration {
-            //     self.time_out = true;
-            //     // self.clock_start = Instant::now();
-            // }
+            let elapsed = web_sys::js_sys::Date::new_0().get_time() as u64
+                - self.clock_start.get_time() as u64;
+            if elapsed >= self.period_duration {
+                self.time_out = true;
+                self.clock_start = web_sys::js_sys::Date::new_0();
+            }
         }
     }
+
 }
 
 impl io::Interruptable for Timer {

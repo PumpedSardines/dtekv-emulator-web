@@ -44,17 +44,17 @@ const CpuContext = createContext<{
   reset: () => void;
 }>({
   vgaFrameBuffer: null,
-  loadBin: () => { },
+  loadBin: () => {},
   isRunning: false,
   hasLoaded: false,
-  onLoad: () => { },
-  removeOnLoad: () => { },
-  onUart: () => { },
-  removeOnUart: () => { },
+  onLoad: () => {},
+  removeOnLoad: () => {},
+  onUart: () => {},
+  removeOnUart: () => {},
   hexDisplays: [0, 0, 0, 0, 0, 0],
-  setButtonState: () => { },
-  setSwitchState: () => { },
-  reset: () => { },
+  setButtonState: () => {},
+  setSwitchState: () => {},
+  reset: () => {},
 });
 
 export function useCpuContext() {
@@ -157,6 +157,7 @@ export function CpuContextProvider(props: CpuContextProviderProps) {
       setHasLoaded(true);
       setIsRunning(true);
       loadCallbacks.forEach((cb) => cb());
+      console.log(cpuRef.current.get_vga_frame_buffer());
       setVgaFrameBuffer(cpuRef.current.get_vga_frame_buffer());
     },
     [loadCallbacks],
@@ -204,13 +205,14 @@ export function CpuContextProvider(props: CpuContextProviderProps) {
         if (shouldUpdate) {
           setHexDisplays(newHexDisplays);
         }
+        if (cpuRef.current.did_vga_frame_buffer_update()) {
+          setVgaFrameBuffer(cpuRef.current.get_vga_frame_buffer());
+        }
 
         const flushed = cpuRef.current.flush_uart();
         if (flushed !== "") {
           uartCallbacks.forEach((cb) => cb(flushed));
         }
-
-        cpuRef.current.clock_timer();
 
         await new Promise((resolve) => window.requestAnimationFrame(resolve));
       }
