@@ -34,6 +34,7 @@ pub fn init_panic_hook() {
 }
 
 #[wasm_bindgen]
+#[allow(dead_code)]
 struct Cpu {
     internal_cpu: cpu::Cpu<cpu::Bus>,
     switch: Rc<RefCell<io::Switch>>,
@@ -43,6 +44,7 @@ struct Cpu {
     uart: Rc<RefCell<io::Uart>>,
     vga_dma: Rc<RefCell<io::VgaDma>>,
     vga_buffer: Rc<RefCell<VgaBuffer>>,
+    led_strip: Rc<RefCell<io::LEDStrip>>,
     timer: Rc<RefCell<Timer>>,
 }
 
@@ -59,6 +61,7 @@ impl Cpu {
         let vga_dma = Rc::new(RefCell::new(io::VgaDma::new()));
         let vga_buffer = Rc::new(RefCell::new(VgaBuffer::new(vga_dma.clone())));
         let timer = Rc::new(RefCell::new(Timer::new()));
+        let led_strip = Rc::new(RefCell::new(io::LEDStrip::new()));
 
         bus.attach_device(switch.clone());
         bus.attach_device(button.clone());
@@ -68,6 +71,7 @@ impl Cpu {
         bus.attach_device(vga_dma.clone());
         bus.attach_device(vga_buffer.clone());
         bus.attach_device(timer.clone());
+        bus.attach_device(led_strip.clone());
 
         let cpu = cpu::Cpu::new_with_bus(bus);
 
@@ -81,6 +85,7 @@ impl Cpu {
             vga_dma,
             vga_buffer,
             timer,
+            led_strip,
         }
     }
 
@@ -114,6 +119,10 @@ impl Cpu {
 
     pub fn get_hex_display(&self, index: u32) -> u8 {
         self.hex_display.borrow().get(index)
+    }
+
+    pub fn get_led(&self, index: u32) -> bool {
+        self.led_strip.borrow().get(index)
     }
 
     pub fn set_button(&self, value: bool) {

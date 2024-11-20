@@ -1,10 +1,11 @@
 import { Cpu, init_panic_hook } from "dtekv_emulator_web";
-import { HexDisplays } from "./types";
+import { HexDisplays, LedStrip } from "./types";
 import {
   buttonPressedAtom,
   cpuLoadCallbacksAtom,
   hasLoadedAtom,
   hexDisplaysAtom,
+  ledStripAtom,
   store,
   switchesAtom,
   uartCallbacksAtom,
@@ -57,6 +58,21 @@ function updateHexDisplays() {
   }
 }
 
+function updateLedStrip() {
+  const newLedStrip: LedStrip = new Array(10).fill(false) as LedStrip;
+  const ledStrip = store.get(ledStripAtom);
+  let shouldUpdate = false;
+  for (let i = 0; i < 10; i++) {
+    newLedStrip[i] = cpu.get_led(i);
+    if (newLedStrip[i] !== ledStrip[i]) {
+      shouldUpdate = true;
+    }
+  }
+  if (shouldUpdate) {
+    store.set(ledStripAtom, newLedStrip);
+  }
+}
+
 /**
  * Checks the VGA frame buffer in the CPU and updates the store if it has changed.
  */
@@ -87,6 +103,7 @@ function cpuLoop() {
   cpu.clock(100_000);
 
   updateHexDisplays();
+  updateLedStrip();
   updateVgaFrameBuffer();
   flushUart();
 

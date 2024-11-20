@@ -4,17 +4,57 @@ import cx from "../../../../utils/cx";
 import styles from "./Nav.module.css";
 import { loadBinary, reset } from "../../../../cpu";
 
-const examples = {
-  primeCounter: fetch("/prime_counter.bin")
-    .then((res) => res.arrayBuffer())
-    .then((buf) => new Uint8Array(buf)),
-  games: fetch("/games.bin")
-    .then((res) => res.arrayBuffer())
-    .then((buf) => new Uint8Array(buf)),
-  bufferSwap: fetch("/buffer_swap.bin") 
-    .then((res) => res.arrayBuffer())
-    .then((buf) => new Uint8Array(buf)),
-};
+const examples = [
+  {
+    id: "prime_counter",
+    name: "Prime counter",
+    bin: fetch("/prime_counter.bin")
+      .then((res) => res.arrayBuffer())
+      .then((buf) => new Uint8Array(buf)),
+  },
+  {
+    id: "games",
+    name: "Games",
+    bin: fetch("/games.bin")
+      .then((res) => res.arrayBuffer())
+      .then((buf) => new Uint8Array(buf)),
+  },
+  {
+    id: "buffer_swap",
+    name: "Buffer swap",
+    bin: fetch("/buffer_swap.bin")
+      .then((res) => res.arrayBuffer())
+      .then((buf) => new Uint8Array(buf)),
+  },
+  {
+    id: "labb1-time4riscv",
+    name: "time4riscv",
+    bin: fetch("/labb1-time4riscv.bin")
+      .then((res) => res.arrayBuffer())
+      .then((buf) => new Uint8Array(buf)),
+  },
+  {
+    id: "labb2-riscv32tests",
+    name: "riscv32tests",
+    bin: fetch("/labb2-riscv32tests.bin")
+      .then((res) => res.arrayBuffer())
+      .then((buf) => new Uint8Array(buf)),
+  },
+  {
+    id: "labb3-time4timer",
+    name: "time4timer",
+    bin: fetch("/labb3-time4timer.bin")
+      .then((res) => res.arrayBuffer())
+      .then((buf) => new Uint8Array(buf)),
+  },
+  {
+    id: "labb3-time4int",
+    name: "time4int",
+    bin: fetch("/labb3-time4int.bin")
+      .then((res) => res.arrayBuffer())
+      .then((buf) => new Uint8Array(buf)),
+  },
+];
 
 function Nav() {
   const [exampleButtonActive, setExampleButtonActive] = useState(false);
@@ -70,30 +110,19 @@ function Nav() {
           ref={exampleRef}
           className={cx(styles.example, exampleButtonActive && styles.active)}
         >
-          <a
-            onClick={async () => {
-              setExampleButtonActive(false);
-              loadBinary(await examples.primeCounter);
-            }}
-          >
-            Prime counter
-          </a>
-          <a
-            onClick={async () => {
-              setExampleButtonActive(false);
-              loadBinary(await examples.games);
-            }}
-          >
-            Games
-          </a>
-          <a
-            onClick={async () => {
-              setExampleButtonActive(false);
-              loadBinary(await examples.bufferSwap);
-            }}
-          >
-            Buffer swap
-          </a>
+          {examples.map(({ id, name, bin }) => {
+            return (
+              <a
+                key={id}
+                onClick={async () => {
+                  setExampleButtonActive(false);
+                  loadBinary(await bin);
+                }}
+              >
+                {name}
+              </a>
+            );
+          })}
         </div>
       </div>
       {

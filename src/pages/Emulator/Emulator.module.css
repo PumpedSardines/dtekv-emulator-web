@@ -8,7 +8,6 @@
   width: 100vw;
 }
 
-
 .nav {
   grid-area: nav;
   background-color: var(--color-background);
@@ -44,4 +43,14 @@
 
 .splitter {
   flex: 1;
+}
+
+.switchLedBox {
+  position: relative;
+}
+
+.led {
+  position: absolute;
+  top: 0px;
+  transform: translateY(calc(-100% - 4px));
 }

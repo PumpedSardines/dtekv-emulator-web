@@ -1,0 +1,5 @@
+.root {
+  display: flex;
+  gap: 4px;
+  flex-direction: row-reverse;
+}

@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./Emulator.module.css";
-import RatioBox from "../../components/RatioBox";
+import { useAtomValue } from "jotai";
+
 import HexDisplays from "./views/HexDisplays";
 import Nav from "./views/Nav";
 import Uart from "./views/Uart";
@@ -8,10 +8,15 @@ import Button from "./views/Button";
 import Switches from "./views/Switches";
 import Vga from "./views/Vga";
 import NotRunning from "./views/NotRunning";
+import LedStrip from "./views/LedStrip";
+
+import RatioBox from "../../components/RatioBox";
+
 import cx from "../../utils/cx";
 import useIsSafari from "../../hooks/useIsSafari";
-import { useAtomValue } from "jotai";
 import { hasLoadedAtom } from "../../atoms";
+
+import styles from "./Emulator.module.css";
 
 function Emulator() {
   const isSafari = useIsSafari();
@@ -32,7 +37,12 @@ function Emulator() {
       <footer className={styles["footer"]}>
         <HexDisplays />
         <div className={styles.splitter} />
-        <Switches />
+        <div className={styles.switchLedBox}>
+          <div className={styles.led}>
+            <LedStrip />
+          </div>
+          <Switches />
+        </div>
         <Button />
       </footer>
     </main>

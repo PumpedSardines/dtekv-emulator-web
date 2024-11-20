@@ -1,0 +1,20 @@
+.root {
+  width: 40px;
+  height: 16px;
+  background-color: var(--color-io-leds-background);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mid {
+  width: 8px;
+  height: 12px;
+  background-color: var(--color-io-leds-off);
+  border-radius: 100px;
+}
+
+.mid.on {
+  background-color: var(--color-io-leds-on);
+}
