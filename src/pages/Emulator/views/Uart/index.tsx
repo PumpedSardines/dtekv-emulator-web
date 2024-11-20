@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
-import { useUart } from "../../../../contexts/CpuContext";
 import styles from "./Uart.module.css";
+import useUart from "../../../../hooks/useUart";
 
 function Uart() {
   const ref = useRef<HTMLTextAreaElement>(null);

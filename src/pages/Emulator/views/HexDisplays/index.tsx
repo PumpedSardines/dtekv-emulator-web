@@ -1,10 +1,11 @@
+import { useAtomValue } from "jotai";
 import HexDisplay from "../../../../components/HexDisplay";
-import { useCpuContext } from "../../../../contexts/CpuContext";
 
 import styles from "./HexDisplays.module.css";
+import { hexDisplaysAtom } from "../../../../atoms";
 
 function HexDisplays() {
-  const { hexDisplays } = useCpuContext();
+  const hexDisplays = useAtomValue(hexDisplaysAtom);
 
   return (
     <div className={styles['hex-displays']}>

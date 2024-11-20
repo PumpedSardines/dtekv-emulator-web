@@ -1,23 +1,13 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import Switch from "../../../../components/Switch";
 import styles from "./Switches.module.css";
 import React from "react";
-import { useCpuContext } from "../../../../contexts/CpuContext";
+import { switchesAtom } from "../../../../atoms";
+import { useAtom } from "jotai";
+import { Switches as TSwitches } from "../../../../types";
 
 function Switches() {
-  const { setSwitchState } = useCpuContext();
-  const [switches, setSwitches] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [switches, setSwitches] = useAtom(switchesAtom);
 
   const values = useMemo(() => {
     const value = switches.reduce((acc, sw, i) => {
@@ -49,23 +39,9 @@ function Switches() {
     setSwitches((switches) => {
       const newSwitches = switches.slice(0);
       newSwitches[index] = !newSwitches[index]!;
-      setSwitchState(
-        newSwitches as [
-          boolean,
-          boolean,
-          boolean,
-          boolean,
-          boolean,
-          boolean,
-          boolean,
-          boolean,
-          boolean,
-          boolean,
-        ],
-      );
-      return newSwitches;
+      return newSwitches as TSwitches;
     });
-  }, [setSwitchState]);
+  }, [setSwitches]);
 
   const getOnClickHandler = useCallback(
     (index: number) => {

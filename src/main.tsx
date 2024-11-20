@@ -1,16 +1,21 @@
 import * as ReactDOM from "react-dom/client";
+import * as jotai from "jotai";
 
 import "./global.css";
 import Emulator from "./pages/Emulator";
-import { CpuContextProvider } from "./contexts/CpuContext";
+import { store } from "./atoms";
+
+import { startCpuLoop } from "./cpu";
 
 const App = () => {
   return (
-    <CpuContextProvider>
+    <jotai.Provider store={store}>
       <Emulator />
-    </CpuContextProvider>
+    </jotai.Provider>
   );
 };
 
+startCpuLoop();
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(<App />);
+

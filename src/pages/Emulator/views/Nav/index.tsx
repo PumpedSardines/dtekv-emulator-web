@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useCpuContext } from "../../../../contexts/CpuContext";
 import cx from "../../../../utils/cx";
 
 import styles from "./Nav.module.css";
+import { loadBinary, reset } from "../../../../cpu";
 
 const examples = {
   primeCounter: fetch("/prime_counter.bin")
@@ -17,8 +17,6 @@ const examples = {
 };
 
 function Nav() {
-  const { loadBin, reset } = useCpuContext();
-
   const [exampleButtonActive, setExampleButtonActive] = useState(false);
   const exampleRef = useRef<HTMLDivElement>(null);
   const exampleButtonRef = useRef<HTMLButtonElement>(null);
@@ -51,7 +49,7 @@ function Nav() {
           onChange={async (e) => {
             const file = e.currentTarget.files![0];
             const bin = new Uint8Array(await file.arrayBuffer());
-            loadBin(bin);
+            loadBinary(bin);
           }}
         />
       </label>
@@ -75,7 +73,7 @@ function Nav() {
           <a
             onClick={async () => {
               setExampleButtonActive(false);
-              loadBin(await examples.primeCounter);
+              loadBinary(await examples.primeCounter);
             }}
           >
             Prime counter
@@ -83,7 +81,7 @@ function Nav() {
           <a
             onClick={async () => {
               setExampleButtonActive(false);
-              loadBin(await examples.games);
+              loadBinary(await examples.games);
             }}
           >
             Games
@@ -91,7 +89,7 @@ function Nav() {
           <a
             onClick={async () => {
               setExampleButtonActive(false);
-              loadBin(await examples.bufferSwap);
+              loadBinary(await examples.bufferSwap);
             }}
           >
             Buffer swap

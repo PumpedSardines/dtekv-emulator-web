@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./Emulator.module.css";
 import RatioBox from "../../components/RatioBox";
-import { useCpuContext } from "../../contexts/CpuContext";
 import HexDisplays from "./views/HexDisplays";
 import Nav from "./views/Nav";
 import Uart from "./views/Uart";
@@ -11,9 +10,10 @@ import Vga from "./views/Vga";
 import NotRunning from "./views/NotRunning";
 import cx from "../../utils/cx";
 import useIsSafari from "../../hooks/useIsSafari";
+import { useAtomValue } from "jotai";
+import { hasLoadedAtom } from "../../atoms";
 
 function Emulator() {
-  const { hasLoaded } = useCpuContext();
   const isSafari = useIsSafari();
 
   return (
@@ -23,7 +23,7 @@ function Emulator() {
       </nav>
       <section className={styles["vga"]}>
         <RatioBox width={320} height={240}>
-          {hasLoaded ? <Vga /> : <NotRunning />}
+          <VgaNotRunning />
         </RatioBox>
       </section>
       <section className={styles["uart"]}>
@@ -37,6 +37,15 @@ function Emulator() {
       </footer>
     </main>
   );
+}
+
+function VgaNotRunning() {
+  const hasLoaded = useAtomValue(hasLoadedAtom);
+  if (hasLoaded) {
+    return <Vga />;
+  } else {
+    return <NotRunning />;
+  }
 }
 
 export default React.memo(Emulator);

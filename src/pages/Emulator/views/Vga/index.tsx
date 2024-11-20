@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
-import { useCpuContext } from "../../../../contexts/CpuContext";
+import React, { useEffect, useRef } from "react";
 import { useRatioBox } from "../../../../components/RatioBox";
+import { vgaBufferAtom } from "../../../../atoms";
+import { useAtomValue } from "jotai";
 
 function Vga() {
-  const { vgaFrameBuffer } = useCpuContext();
+  const vgaFrameBuffer = useAtomValue(vgaBufferAtom);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { width, height } = useRatioBox();
 
@@ -127,4 +128,4 @@ function Vga() {
   return <canvas ref={canvasRef} width={width} height={height} />;
 }
 
-export default Vga;
+export default React.memo(Vga);

@@ -1,21 +1,22 @@
 import { useCallback } from "react";
 import styles from "./Button.module.css";
-import { useCpuContext } from "../../../../contexts/CpuContext";
+import { useSetAtom } from "jotai";
+import { buttonPressedAtom } from "../../../../atoms";
 
 function Button() {
-  const { setButtonState } = useCpuContext();
+  const setButton = useSetAtom(buttonPressedAtom);
 
   const mouseDownHandler = useCallback(() => {
-    setButtonState(true);
-  }, [setButtonState]);
+    setButton(true);
+  }, [setButton]);
 
   const mouseLeaveHandler = useCallback(() => {
-    setButtonState(false);
-  }, [setButtonState]);
+    setButton(false);
+  }, [setButton]);
 
   const mouseUpHandler = useCallback(() => {
-    setButtonState(false);
-  }, [setButtonState]);
+    setButton(false);
+  }, [setButton]);
 
   return (
     <button

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./NotRunning.module.css";
-import { useCpuContext } from "../../../../contexts/CpuContext";
+import { loadBinary } from "../../../../cpu";
 
 function NotRunning() {
   return (
@@ -11,8 +11,6 @@ function NotRunning() {
 }
 
 function LoadUi() {
-  const { loadBin } = useCpuContext();
-
   return (
     <div className={styles.loadUi}>
       <h1>No binary loaded</h1>
@@ -24,7 +22,7 @@ function LoadUi() {
             onChange={async (e) => {
               const file = e.currentTarget.files![0];
               const bin = new Uint8Array(await file.arrayBuffer());
-              loadBin(bin);
+              loadBinary(bin);
             }}
           />
         </label>

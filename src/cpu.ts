@@ -1,0 +1,115 @@
+import { Cpu, init_panic_hook } from "dtekv_emulator_web";
+import { HexDisplays } from "./types";
+import {
+  buttonPressedAtom,
+  cpuLoadCallbacksAtom,
+  hasLoadedAtom,
+  hexDisplaysAtom,
+  store,
+  switchesAtom,
+  uartCallbacksAtom,
+  vgaBufferAtom,
+} from "./atoms";
+
+init_panic_hook();
+
+const cpu = Cpu.new();
+let currentLoadedBinary: Uint8Array | null = null;
+
+/**
+ * Sets the button state in the CPU
+ */
+function updateButton() {
+  const currentState = cpu.get_button();
+  const button = store.get(buttonPressedAtom);
+  if (currentState !== button) {
+    cpu.set_button(button);
+  }
+}
+
+function updateSwitches() {
+  const switches = store.get(switchesAtom);
+
+  for (let i = 0; i < 10; i++) {
+    const current = cpu.get_switch(i);
+
+    if (current !== switches[i]) {
+      cpu.set_switch(i, switches[i]);
+    }
+  }
+}
+
+/**
+ * Checks current hex display state in the CPU and updates the store if it has changed.
+ */
+function updateHexDisplays() {
+  const newHexDisplays: HexDisplays = [0, 0, 0, 0, 0, 0];
+  const hexDisplays = store.get(hexDisplaysAtom);
+  let shouldUpdate = false;
+  for (let i = 0; i < 6; i++) {
+    newHexDisplays[i] = cpu.get_hex_display(i);
+    if (newHexDisplays[i] !== hexDisplays[i]) {
+      shouldUpdate = true;
+    }
+  }
+  if (shouldUpdate) {
+    store.set(hexDisplaysAtom, newHexDisplays);
+  }
+}
+
+/**
+ * Checks the VGA frame buffer in the CPU and updates the store if it has changed.
+ */
+function updateVgaFrameBuffer() {
+  if (cpu.did_vga_frame_buffer_update()) {
+    store.set(vgaBufferAtom, cpu.get_vga_frame_buffer());
+  }
+}
+
+/**
+ * Clear the UART queue and pass it to the callbacks
+ */
+function flushUart() {
+  const flushed = cpu.flush_uart();
+  if (flushed !== "") {
+    const uartCallbacks = store.get(uartCallbacksAtom);
+    uartCallbacks.forEach((callback) => {
+      callback({ type: "write", content: flushed });
+    });
+  }
+}
+
+function cpuLoop() {
+  updateButton();
+  updateSwitches();
+
+  cpu.handle_interrupt();
+  cpu.clock(100_000);
+
+  updateHexDisplays();
+  updateVgaFrameBuffer();
+  flushUart();
+
+  requestAnimationFrame(cpuLoop);
+}
+
+export function loadBinary(binary: Uint8Array) {
+  currentLoadedBinary = new Uint8Array(binary);
+  cpu.set_to_new();
+  cpu.load(new Uint8Array(binary));
+  cpu.reset();
+  const loadCallbacks = store.get(cpuLoadCallbacksAtom);
+  loadCallbacks.forEach((cb) => cb());
+  store.set(vgaBufferAtom, cpu.get_vga_frame_buffer());
+  store.set(hasLoadedAtom, true);
+}
+
+export function reset() {
+  if (currentLoadedBinary) {
+    loadBinary(currentLoadedBinary);
+  }
+}
+
+export function startCpuLoop() {
+  requestAnimationFrame(cpuLoop);
+}

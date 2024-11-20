@@ -1,7 +1,7 @@
 {
   "name": "dtekv-emulator-web",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "dtekv_emulator_web": "file:wasm/pkg",
+    "jotai": "^2.10.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "vite-plugin-top-level-await": "^1.4.4",
