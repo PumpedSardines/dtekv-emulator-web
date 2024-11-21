@@ -58,6 +58,38 @@ const examples = [
 ];
 
 function Nav() {
+  return (
+    <>
+      <label className={styles.navButton} htmlFor="load-nav-button">
+        Load Binary
+        <input
+          style={{ display: "none" }}
+          id="load-nav-button"
+          type="file"
+          onChange={async (e) => {
+            const file = e.currentTarget.files![0];
+            const bin = new Uint8Array(await file.arrayBuffer());
+            loadBinary(bin);
+          }}
+        />
+      </label>
+      <button onClick={reset} className={styles.navButton}>
+        Reset
+      </button>
+      <ExampleButton />
+      <div className={styles.splitter} />
+      <a
+        className={cx(styles.navButton, styles.right)}
+        href={GITHUB_URL}
+        target="_blank"
+      >
+        GitHub
+      </a>
+    </>
+  );
+}
+
+function ExampleButton() {
   const [exampleButtonActive, setExampleButtonActive] = useState(false);
   const exampleRef = useRef<HTMLDivElement>(null);
   const exampleButtonRef = useRef<HTMLButtonElement>(null);
@@ -80,61 +112,35 @@ function Nav() {
   }, [exampleRef]);
 
   return (
-    <>
-      <label className={styles.navButton} htmlFor="load-nav-button">
-        Load Binary
-        <input
-          style={{ display: "none" }}
-          id="load-nav-button"
-          type="file"
-          onChange={async (e) => {
-            const file = e.currentTarget.files![0];
-            const bin = new Uint8Array(await file.arrayBuffer());
-            loadBinary(bin);
-          }}
-        />
-      </label>
-      <button onClick={reset} className={styles.navButton}>
-        Reset
-      </button>
-      <div className={styles.wrapper}>
-        <button
-          ref={exampleButtonRef}
-          onClick={() => {
-            setExampleButtonActive(!exampleButtonActive);
-          }}
-          className={styles.navButton}
-        >
-          Load Example
-        </button>
-        <div
-          ref={exampleRef}
-          className={cx(styles.example, exampleButtonActive && styles.active)}
-        >
-          {examples.map(({ id, name, bin }) => {
-            return (
-              <a
-                key={id}
-                onClick={async () => {
-                  setExampleButtonActive(false);
-                  loadBinary(await bin);
-                }}
-              >
-                {name}
-              </a>
-            );
-          })}
-        </div>
-      </div>
-      <div className={styles.splitter} />
-      <a
-        className={cx(styles.navButton, styles.right)}
-        href={GITHUB_URL}
-        target="_blank"
+    <div className={styles.wrapper}>
+      <button
+        ref={exampleButtonRef}
+        onClick={() => {
+          setExampleButtonActive(!exampleButtonActive);
+        }}
+        className={styles.navButton}
       >
-        GitHub
-      </a>
-    </>
+        Load Example
+      </button>
+      <div
+        ref={exampleRef}
+        className={cx(styles.example, exampleButtonActive && styles.active)}
+      >
+        {examples.map(({ id, name, bin }) => {
+          return (
+            <a
+              key={id}
+              onClick={async () => {
+                setExampleButtonActive(false);
+                loadBinary(await bin);
+              }}
+            >
+              {name}
+            </a>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
