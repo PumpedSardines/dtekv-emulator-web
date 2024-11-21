@@ -125,9 +125,6 @@ function Nav() {
           })}
         </div>
       </div>
-      {
-        // <button className={styles.navButton}>Help</button>
-      }
       <div className={styles.splitter} />
       <a
         className={cx(styles.navButton, styles.right)}
