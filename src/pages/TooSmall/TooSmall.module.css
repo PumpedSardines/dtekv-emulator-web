@@ -1,0 +1,29 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  padding: 16px;
+}
+
+.root h1 {
+  margin: 0;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.root p {
+  margin: 0;
+  text-align: center;
+}
+
+.splitter {
+  height: 16px;
+}
+
+.root a {
+  color: var(--color-text);
+  text-decoration: underline;
+}

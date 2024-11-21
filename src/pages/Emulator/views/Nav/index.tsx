@@ -3,6 +3,7 @@ import cx from "../../../../utils/cx";
 
 import styles from "./Nav.module.css";
 import { loadBinary, reset } from "../../../../cpu";
+import { GITHUB_URL } from "../../../../consts";
 
 const examples = [
   {
@@ -128,7 +129,7 @@ function Nav() {
       <div className={styles.splitter} />
       <a
         className={cx(styles.navButton, styles.right)}
-        href="https://github.com/PumpedSardines/dtekv-emulator-web"
+        href={GITHUB_URL}
         target="_blank"
       >
         GitHub
