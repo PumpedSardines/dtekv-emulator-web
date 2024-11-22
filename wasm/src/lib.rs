@@ -170,4 +170,20 @@ impl Cpu {
         }
         self.internal_cpu.bus.clock();
     }
+
+    pub fn load_data_at(&mut self, addr: u32, data: Vec<u8>) {
+        self.sdram.borrow_mut().load_data_at(addr, data);
+    }
+
+    pub fn read_data_at(&self, addr: u32, length: usize) -> Result<Vec<u8>, JsError> {
+        let mut buf: Vec<u8> = Vec::with_capacity(length);
+        let sdram = self.sdram.borrow();
+        for i in 0..length {
+            let byte = sdram
+                .load_byte(addr + i as u32)
+                .map_err(|_| JsError::new("Out of range."))?;
+            buf.push(byte);
+        }
+        Ok(buf)
+    }
 }
