@@ -9,6 +9,7 @@ import { hasLoadedAtom } from "../../../../atoms";
 import useDialog from "../../../../hooks/useDialog";
 import UploadForm from "./helpers/UploadDownloadForms/UploadForm";
 import DowloadForm from "./helpers/UploadDownloadForms/DowloadForm";
+import { useRef } from "react";
 
 const examples = [
   {
@@ -63,18 +64,22 @@ const examples = [
 ];
 
 function Nav() {
+  const fileRef = useRef<HTMLInputElement>(null);
+
   return (
     <>
       <label className={styles.navButton} htmlFor="load-nav-button">
         Load Binary
         <input
           style={{ display: "none" }}
+          ref={fileRef}
           id="load-nav-button"
           type="file"
           onChange={async (e) => {
             const file = e.currentTarget.files![0];
             const bin = new Uint8Array(await file.arrayBuffer());
             loadBinary(bin);
+            fileRef.current!.value = "";
           }}
         />
       </label>
