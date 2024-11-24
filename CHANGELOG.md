@@ -7,9 +7,13 @@ Add new features here, everything will be added at the end to the changelog when
 
 ## Changed
 
-## Deleted
+## Fixed
 
 -->
+
+# v1.3.2
+## Fixed
+- Bug with safari where dialog height wasn't set
 
 # v1.3.1
 
