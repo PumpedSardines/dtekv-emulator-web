@@ -2,7 +2,7 @@ import cx from "../../../../utils/cx";
 
 import styles from "./Nav.module.css";
 import { softReset, loadBinary, reload, softLoadBinary } from "../../../../cpu";
-import { GITHUB_URL } from "../../../../consts";
+import { CHANGELOG_URL, GITHUB_URL } from "../../../../consts";
 import NavDropDownButton from "./helpers/NavDropDownButton";
 import { useAtomValue } from "jotai";
 import { hasLoadedAtom } from "../../../../atoms";
@@ -84,6 +84,13 @@ function Nav() {
       <ExampleButton />
       <AdvancedButton />
       <div className={styles.splitter} />
+      <a
+        className={cx(styles.navButton, styles.right)}
+        href={CHANGELOG_URL}
+        target="_blank"
+      >
+        v{__APP_VERSION__}
+      </a>
       <a
         className={cx(styles.navButton, styles.right)}
         href={GITHUB_URL}
