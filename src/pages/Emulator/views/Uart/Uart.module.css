@@ -15,8 +15,8 @@
   background-color: var(--color-background-alt);
   border: solid 1px var(--color-border);
   color: var(--color-text);
-  font-family: monospace;
-  font-size: 12px;
+  font-family: var(--font-family-mono);
+  font-size: 14px;
 }
 
 .uart:focus {

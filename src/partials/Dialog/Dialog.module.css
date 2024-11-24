@@ -1,11 +1,12 @@
 .dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   cursor: pointer;
 }
 
 .dialog {
   width: 500px;
   height: max-content;
+  border-radius: 4px;
 
   padding: 0;
   background-color: var(--color-background);

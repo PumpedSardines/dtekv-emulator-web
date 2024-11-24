@@ -12,6 +12,8 @@
 
 .root h1 {
   margin: 0;
+  font-weight: 800;
+  font-size: 2rem;
 }
 
 .loadUi {
