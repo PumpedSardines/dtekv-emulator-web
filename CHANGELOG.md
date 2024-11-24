@@ -8,6 +8,7 @@ Add new features here, everything will be added at the end to the changelog when
 ## Changed
 
 ## Fixed
+- Allow uploading same binary multiple times
 
 -->
 
