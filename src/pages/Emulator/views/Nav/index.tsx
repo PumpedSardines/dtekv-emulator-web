@@ -1,9 +1,14 @@
-import { useEffect, useRef, useState } from "react";
 import cx from "../../../../utils/cx";
 
 import styles from "./Nav.module.css";
-import { loadBinary, reset } from "../../../../cpu";
+import { softReset, loadBinary, reload, softLoadBinary } from "../../../../cpu";
 import { GITHUB_URL } from "../../../../consts";
+import NavDropDownButton from "./helpers/NavDropDownButton";
+import { useAtomValue } from "jotai";
+import { hasLoadedAtom } from "../../../../atoms";
+import useDialog from "../../../../hooks/useDialog";
+import UploadForm from "./helpers/UploadDownloadForms/UploadForm";
+import DowloadForm from "./helpers/UploadDownloadForms/DowloadForm";
 
 const examples = [
   {
@@ -73,10 +78,11 @@ function Nav() {
           }}
         />
       </label>
-      <button onClick={reset} className={styles.navButton}>
-        Reset
+      <button onClick={reload} className={styles.navButton}>
+        Reload
       </button>
       <ExampleButton />
+      <AdvancedButton />
       <div className={styles.splitter} />
       <a
         className={cx(styles.navButton, styles.right)}
@@ -90,57 +96,60 @@ function Nav() {
 }
 
 function ExampleButton() {
-  const [exampleButtonActive, setExampleButtonActive] = useState(false);
-  const exampleRef = useRef<HTMLDivElement>(null);
-  const exampleButtonRef = useRef<HTMLButtonElement>(null);
+  return (
+    <NavDropDownButton
+      title="Load Example"
+      buttons={examples.map(({ name, bin }) => ({
+        title: name,
+        onClick: async () => {
+          loadBinary(await bin);
+        },
+      }))}
+    />
+  );
+}
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        exampleRef.current &&
-        exampleButtonRef.current &&
-        !exampleRef.current.contains(event.target as Node) &&
-        !exampleButtonRef.current.contains(event.target as Node)
-      ) {
-        setExampleButtonActive(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [exampleRef]);
+function AdvancedButton() {
+  const hasLoaded = useAtomValue(hasLoadedAtom);
+  const { open: openDialog } = useDialog();
 
   return (
-    <div className={styles.wrapper}>
-      <button
-        ref={exampleButtonRef}
-        onClick={() => {
-          setExampleButtonActive(!exampleButtonActive);
-        }}
-        className={styles.navButton}
-      >
-        Load Example
-      </button>
-      <div
-        ref={exampleRef}
-        className={cx(styles.example, exampleButtonActive && styles.active)}
-      >
-        {examples.map(({ id, name, bin }) => {
-          return (
-            <a
-              key={id}
-              onClick={async () => {
-                setExampleButtonActive(false);
-                loadBinary(await bin);
-              }}
-            >
-              {name}
-            </a>
-          );
-        })}
-      </div>
-    </div>
+    <NavDropDownButton
+      title="Advanced"
+      buttons={[
+        {
+          title: "Soft Load",
+          onClick: () => {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.click();
+            input.addEventListener("change", async (e) => {
+              const file = (e.target as HTMLInputElement).files![0];
+              const bin = new Uint8Array(await file.arrayBuffer());
+              softLoadBinary(bin);
+            });
+          },
+        },
+        {
+          title: "Soft Reset",
+          onClick: softReset,
+        },
+        {
+          title: "Download",
+          disabled: !hasLoaded,
+          onClick: () => {
+            openDialog(<DowloadForm />);
+          },
+        },
+        {
+          title: "Upload",
+          disabled: !hasLoaded,
+          onClick: () => {
+            openDialog(<UploadForm />);
+          },
+        },
+      ]}
+    />
   );
 }
 

@@ -5,6 +5,7 @@ import { HexDisplays, LedStrip, Switches, UartCallback, CpuLoadCallback } from "
 // Need to add that as there for some reason?
 export const store = createStore() as INTERNAL_PrdStore;
 
+export const dialogElementAtom = atom<React.ReactNode | null>(null);
 export const hasLoadedAtom = atom(false);
 export const buttonPressedAtom = atom(false);
 export const vgaBufferAtom = atom(new Uint8Array(320 * 240 * 3));

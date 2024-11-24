@@ -110,6 +110,28 @@ function cpuLoop() {
   requestAnimationFrame(cpuLoop);
 }
 
+export function softReset() {
+  if (currentLoadedBinary) {
+    currentLoadedBinary = new Uint8Array(currentLoadedBinary);
+    cpu.load(new Uint8Array(currentLoadedBinary));
+    cpu.reset();
+    const loadCallbacks = store.get(cpuLoadCallbacksAtom);
+    loadCallbacks.forEach((cb) => cb());
+    store.set(vgaBufferAtom, cpu.get_vga_frame_buffer());
+    store.set(hasLoadedAtom, true);
+  }
+}
+
+export function softLoadBinary(binary: Uint8Array) {
+  currentLoadedBinary = new Uint8Array(binary);
+  cpu.load(new Uint8Array(binary));
+  cpu.reset();
+  const loadCallbacks = store.get(cpuLoadCallbacksAtom);
+  loadCallbacks.forEach((cb) => cb());
+  store.set(vgaBufferAtom, cpu.get_vga_frame_buffer());
+  store.set(hasLoadedAtom, true);
+}
+
 export function loadBinary(binary: Uint8Array) {
   currentLoadedBinary = new Uint8Array(binary);
   cpu.set_to_new();
@@ -121,7 +143,7 @@ export function loadBinary(binary: Uint8Array) {
   store.set(hasLoadedAtom, true);
 }
 
-export function reset() {
+export function reload() {
   if (currentLoadedBinary) {
     loadBinary(currentLoadedBinary);
   }
@@ -129,4 +151,12 @@ export function reset() {
 
 export function startCpuLoop() {
   requestAnimationFrame(cpuLoop);
+}
+
+export function loadDataAt(addr: number, data: Uint8Array) {
+  cpu.load_data_at(addr, data);
+}
+
+export function readDataAt(addr: number, length: number): Uint8Array {
+  return cpu.read_data_at(addr, length);
 }

@@ -27,82 +27,22 @@
   --color-button-hover: #777;
 
   --color-text: #fff;
+  --color-text-disabled: #777;
   --color-background: #444;
   --color-background-hover: #555;
   --color-background-alt: #333;
   --color-border: #222;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-hex-display-on: #f00;
-    --color-hex-display-off: #522;
-    --color-hex-display-background: #c8c8c8;
-    --color-hex-display-gap-background: #b8b8b8;
-
-    --color-error-background: #a40;
-    --color-error-border: #a00;
-
-    --color-io-switch-background: #b8b8b8;
-    --color-io-switch-inner-background: #999;
-    --color-io-switch-knob: #555;
-
-    --color-io-leds-background: #b8b8b8;
-    --color-io-leds-on: #f00;
-    --color-io-leds-off: #522;
-
-    --color-io-button-background: #b8b8b8;
-    --color-io-button-clickable-area-background: #555;
-    --color-io-button-clickable-area-pressed: #444;
-    --color-io-button-clickable-area-hover: #666;
-
-    --color-button-hover: #777;
-    --color-text: #222;
-    --color-background: #f8f8f8;
-    --color-background-hover: #e8e8e8;
-    --color-background-alt: #c8c8c8;
-    --color-border: #b8b8b8;
-  }
+body,
+html {
+  margin: 0;
+  padding: 0;
 }
 
-[data-color="dark"] {
-  --color-hex-display-on: #f00;
-  --color-hex-display-off: #522;
-  --color-hex-display-background: #333;
-  --color-hex-display-gap-background: #444;
-
-  --color-error-background: #a40;
-  --color-error-border: #a00;
-
-  --color-io-switch-background: #777;
-  --color-io-switch-inner-background: #555;
-  --color-io-switch-knob: #333;
-
-  --color-io-leds-background: #777;
-  --color-io-leds-on: #f00;
-  --color-io-leds-off: #522;
-
-  --color-io-button-background: #777;
-  --color-io-button-clickable-area-background: #333;
-  --color-io-button-clickable-area-pressed: #555;
-  --color-io-button-clickable-area-hover: #383838;
-
-  --color-button-hover: #777;
-
-  --color-text: #fff;
-  --color-background: #444;
-  --color-background-hover: #555;
-  --color-background-alt: #333;
-  --color-border: #222;
-}
-body,html {
-    margin: 0;
-    padding: 0;
-}
 body {
   overflow: hidden;
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: sans-serif;
-  transition: background-color 0.2s, color 0.2s;
 }
