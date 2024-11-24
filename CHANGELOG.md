@@ -11,6 +11,10 @@ Add new features here, everything will be added at the end to the changelog when
 
 -->
 
+# v1.4.2
+## Changed
+- Bug with font path
+
 # v1.4.1
 ## Changed
 - Lato and Ubuntu Mono as fonts
