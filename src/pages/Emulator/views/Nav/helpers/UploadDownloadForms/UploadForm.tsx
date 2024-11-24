@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import styles from "./styles.module.css";
 import cx from "../../../../../../utils/cx";
-import { loadDataAt } from "../../../../../../cpu";
+import { storeAt } from "../../../../../../cpu";
 import { parseAddress } from "./utils";
 import useDialog from "../../../../../../hooks/useDialog";
 
@@ -30,7 +30,7 @@ function UploadForm() {
         const file = formData.get("file") as File;
 
         const data = new Uint8Array(await file.arrayBuffer());
-        loadDataAt(address, data);
+        storeAt(address, data);
         dialog.close();
       }}
     >
