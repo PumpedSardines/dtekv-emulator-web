@@ -6,11 +6,14 @@ Add new features here, everything will be added at the end to the changelog when
 ## Added
 
 ## Changed
-- Lato and Ubuntu Mono as fonts
 
 ## Fixed
 
 -->
+
+# v1.4.1
+## Changed
+- Lato and Ubuntu Mono as fonts
 
 # v1.4.0
 ## Added
