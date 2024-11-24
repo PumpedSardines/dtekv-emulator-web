@@ -11,6 +11,11 @@ Add new features here, everything will be added at the end to the changelog when
 
 -->
 
+# v1.3.1
+
+## Added
+- Changelog and version button
+
 # v1.3.0
 
 ## Added
