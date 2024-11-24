@@ -13,12 +13,16 @@
   user-select: none;
 }
 
+.navButton:hover {
+  background-color: var(--color-background-hover);
+}
+
 .wrapper {
   position: relative;
   height: 100%;
 }
 
-.example {
+.dropDown {
   display: none;
   position: absolute;
   flex-direction: column;
@@ -29,11 +33,11 @@
   z-index: 10;
 }
 
-.example.active  {
+.dropDown.open  {
   display: flex;
 }
 
-.example button {
+.dropDown button {
   all: unset;
   display: flex;
   align-items: center;
@@ -49,19 +53,13 @@
   cursor: pointer;
 }
 
-.example button:hover {
+.dropDown button:hover {
   background-color: var(--color-background-hover);
 }
 
-.navButton:hover {
-  background-color: var(--color-background-hover);
-}
 
-.navButton.right {
-  border-right: unset;
-  border-left: 1px solid var(--color-border);
-}
-
-.splitter {
-  flex: 1;
+.dropDown button[disabled] {
+  cursor: not-allowed;
+  color: var(--color-text-disabled);
+  background-color: var(--color-background);
 }

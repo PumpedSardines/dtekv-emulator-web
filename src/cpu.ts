@@ -110,12 +110,21 @@ function cpuLoop() {
   requestAnimationFrame(cpuLoop);
 }
 
-export function hardReset() {
-  cpu.set_to_new();
+export function softReset() {
+  if (currentLoadedBinary) {
+    currentLoadedBinary = new Uint8Array(currentLoadedBinary);
+    cpu.load(new Uint8Array(currentLoadedBinary));
+    cpu.reset();
+    const loadCallbacks = store.get(cpuLoadCallbacksAtom);
+    loadCallbacks.forEach((cb) => cb());
+    store.set(vgaBufferAtom, cpu.get_vga_frame_buffer());
+    store.set(hasLoadedAtom, true);
+  }
 }
 
 export function loadBinary(binary: Uint8Array) {
   currentLoadedBinary = new Uint8Array(binary);
+  cpu.set_to_new();
   cpu.load(new Uint8Array(binary));
   cpu.reset();
   const loadCallbacks = store.get(cpuLoadCallbacksAtom);
@@ -124,7 +133,7 @@ export function loadBinary(binary: Uint8Array) {
   store.set(hasLoadedAtom, true);
 }
 
-export function reset() {
+export function reload() {
   if (currentLoadedBinary) {
     loadBinary(currentLoadedBinary);
   }

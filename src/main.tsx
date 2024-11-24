@@ -9,6 +9,7 @@ import { startCpuLoop } from "./cpu";
 import useWindowDimension from "./hooks/useWindowDimensions";
 import { MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT } from "./consts";
 import TooSmall from "./pages/TooSmall";
+import Dialog from "./partials/Dialog";
 
 const App = () => {
   const dimensions = useWindowDimension();
@@ -18,6 +19,7 @@ const App = () => {
 
   return (
     <jotai.Provider store={store}>
+      <Dialog />
       {(() => {
         if (isTooSmall) {
           return <TooSmall />;

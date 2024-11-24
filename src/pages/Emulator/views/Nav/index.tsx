@@ -3,14 +3,20 @@ import cx from "../../../../utils/cx";
 
 import styles from "./Nav.module.css";
 import {
-  hardReset,
+  softReset,
   loadBinary,
   loadDataAt,
   readDataAt,
-  reset,
+  reload,
 } from "../../../../cpu";
 import { GITHUB_URL } from "../../../../consts";
 import useOnClickOutside from "../../../../hooks/useOnClickOutside";
+import NavDropDownButton from "./helpers/NavDropDownButton";
+import { useAtomValue } from "jotai";
+import { hasLoadedAtom } from "../../../../atoms";
+import useDialog from "../../../../hooks/useDialog";
+import UploadForm from "./helpers/UploadDownloadForms/UploadForm";
+import DowloadForm from "./helpers/UploadDownloadForms/DowloadForm";
 
 const examples = [
   {
@@ -76,17 +82,15 @@ function Nav() {
           onChange={async (e) => {
             const file = e.currentTarget.files![0];
             const bin = new Uint8Array(await file.arrayBuffer());
-            // hardReset(); // TODO
             loadBinary(bin);
           }}
         />
       </label>
-      <button onClick={reset} className={styles.navButton}>
-        Reset
+      <button onClick={reload} className={styles.navButton}>
+        Reload
       </button>
       <ExampleButton />
-      <DtekvUploadButton />
-      <DtekvDownloadButton />
+      <AdvancedButton />
       <div className={styles.splitter} />
       <a
         className={cx(styles.navButton, styles.right)}
@@ -100,142 +104,51 @@ function Nav() {
 }
 
 function ExampleButton() {
-  const [exampleButtonActive, setExampleButtonActive] = useState(false);
-  const exampleRef = useRef<HTMLDivElement>(null);
-  const exampleButtonRef = useRef<HTMLButtonElement>(null);
-
-  useOnClickOutside([exampleRef, exampleButtonRef], () =>
-    setExampleButtonActive(false)
+  return (
+    <NavDropDownButton
+      title="Load Example"
+      buttons={examples.map(({ name, bin }) => ({
+        title: name,
+        onClick: async () => {
+          loadBinary(await bin);
+        },
+      }))}
+    />
   );
+}
+
+function AdvancedButton() {
+  const hasLoaded = useAtomValue(hasLoadedAtom);
+  const { open: openDialog } = useDialog();
 
   return (
-    <div className={styles.wrapper}>
-      <button
-        ref={exampleButtonRef}
-        onClick={() => {
-          setExampleButtonActive(!exampleButtonActive);
-        }}
-        className={styles.navButton}
-      >
-        Load Example
-      </button>
-      <div
-        ref={exampleRef}
-        className={cx(styles.example, exampleButtonActive && styles.active)}
-      >
-        {examples.map(({ id, name, bin }) => {
-          return (
-            <a
-              key={id}
-              onClick={async () => {
-                setExampleButtonActive(false);
-                hardReset();
-                loadBinary(await bin);
-              }}
-            >
-              {name}
-            </a>
-          );
-        })}
-      </div>
-    </div>
+    <NavDropDownButton
+      title="Advanced features"
+      buttons={[
+        {
+          title: "Soft reset",
+          onClick: softReset,
+        },
+        {
+          title: "Download",
+          disabled: !hasLoaded,
+          onClick: () => {
+            openDialog(<DowloadForm />)
+          },
+        },
+        {
+          title: "Upload",
+          disabled: !hasLoaded,
+          onClick: () => {
+            openDialog(<UploadForm />)
+          },
+        },
+      ]}
+    />
   );
 }
 
-function parseAddress(str: string): number | null {
-  const addr = str.startsWith("0x")
-    ? parseInt(str.substring(2), 16)
-    : parseInt(str);
-  if (isNaN(addr) || addr < 0) {
-    return null;
-  }
-  return addr;
-}
-
-function showError(ref: React.RefObject<HTMLInputElement>, error: string) {
-  ref.current?.setCustomValidity(error);
-  ref.current?.reportValidity();
-}
-
-function DtekvUploadButton() {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const addressRef = useRef<HTMLInputElement>(null);
-  const fileInput = useRef<HTMLInputElement>(null);
-  const [active, setActive] = useState(false);
-  const [address, setAddress] = useState("0x00000000");
-
-  useOnClickOutside([contentRef, buttonRef], () => setActive(false));
-
-  return (
-    <div className={styles.wrapper}>
-      <button
-        ref={buttonRef}
-        onClick={() => {
-          setActive(!active);
-        }}
-        className={styles.navButton}
-      >
-        dtekv-upload
-      </button>
-      <div
-        ref={contentRef}
-        className={cx(styles.popoutContainer, active && styles.active)}
-      >
-        <div>
-          <label htmlFor="dtekv-upload-addr" className={styles.formLabel}>
-            Address
-          </label>
-          <input
-            ref={addressRef}
-            id="dtekv-upload-addr"
-            className={styles.formInput}
-            value={address}
-            onInput={(e) => setAddress((e.target as HTMLInputElement).value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="dtekv-upload-file" className={styles.formLabel}>
-            Content
-          </label>
-          <input
-            ref={fileInput}
-            id="dtekv-upload-file"
-            type="file"
-            className={styles.uploadInput}
-            required
-          />
-        </div>
-        <div>
-          <button
-            className={styles.formButton}
-            onClick={async () => {
-              const addr = parseAddress(address);
-              if (addr === null) {
-                showError(addressRef, "Please provide an address.");
-                return;
-              }
-              const file = fileInput.current?.files?.[0];
-              if (!file) {
-                showError(fileInput, "Please select a file to upload.");
-                return;
-              }
-
-              setActive(false);
-              const data = new Uint8Array(await file.arrayBuffer());
-              loadDataAt(addr, data);
-            }}
-          >
-            Upload
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function DtekvDownloadButton() {
+function DownloadButton() {
   const contentRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const fileNameInput = useRef<HTMLInputElement>(null);
@@ -257,7 +170,7 @@ function DtekvDownloadButton() {
         }}
         className={styles.navButton}
       >
-        dtekv-download
+        Download
       </button>
       <div
         ref={contentRef}
@@ -322,7 +235,7 @@ function DtekvDownloadButton() {
               if (isNaN(length) || length <= 0) {
                 showError(
                   lengthInput,
-                  "Please provide an amount of bytes to download."
+                  "Please provide an amount of bytes to download.",
                 );
                 return;
               }

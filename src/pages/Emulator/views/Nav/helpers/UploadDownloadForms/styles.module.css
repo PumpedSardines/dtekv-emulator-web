@@ -1,0 +1,49 @@
+.cont {
+  display: block;
+  background-color: var(--color-background);
+  padding: 32px;
+  flex-direction: column;
+}
+
+.cont h1 {
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+.formInput {
+  font-family: monospace;
+  background-color: var(--color-background-alt);
+  border: 1px solid var(--color-border);
+  color: white;
+  border-radius: 0;
+  outline: 0;
+  padding: 8px 16px;
+  width: 100%;
+}
+
+.formInput::file-selector-button {
+  display: none;
+}
+.formInput::-webkit-file-upload-button {
+  display: none;
+}
+.formInput::-ms-browse {
+  display: none;
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 4px;
+  margin-top: 16px;
+}
+
+.formButton {
+  background-color: var(--color-background);
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  color: white;
+  margin-top: 24px;
+  padding: 8px 16px;
+  width: 100%;
+  cursor: pointer;
+}
