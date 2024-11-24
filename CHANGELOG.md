@@ -4,6 +4,15 @@ Add new features here, everything will be added at the end to the changelog when
 
 # vX.X.X
 ## Added
+
+## Changed
+
+## Fixed
+
+-->
+
+# v1.4.0
+## Added
 - Added a hard reset button to get a new board 
 
 ## Changed
@@ -12,8 +21,6 @@ Add new features here, everything will be added at the end to the changelog when
 
 ## Fixed
 - Allow uploading same binary multiple times
-
--->
 
 # v1.3.2
 ## Fixed
