@@ -122,7 +122,7 @@ export function hardReset() {
 
 export function loadBinary(binary: Uint8Array) {
   currentLoadedBinary = new Uint8Array(binary);
-  cpu.load(new Uint8Array(binary));
+  cpu.store_at(0, new Uint8Array(binary));
   cpu.reset();
   const loadCallbacks = store.get(cpuLoadCallbacksAtom);
   loadCallbacks.forEach((cb) => cb());
@@ -140,10 +140,10 @@ export function startCpuLoop() {
   requestAnimationFrame(cpuLoop);
 }
 
-export function loadDataAt(addr: number, data: Uint8Array) {
-  cpu.load_data_at(addr, data);
+export function storeAt(addr: number, data: Uint8Array) {
+  cpu.store_at(addr, data);
 }
 
-export function readDataAt(addr: number, length: number): Uint8Array {
-  return cpu.read_data_at(addr, length);
+export function loadAt(addr: number, length: number): Uint8Array {
+  return cpu.load_at(addr, length);
 }

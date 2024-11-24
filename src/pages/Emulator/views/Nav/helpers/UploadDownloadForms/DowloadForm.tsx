@@ -1,7 +1,7 @@
 import React, { useRef  } from "react";
 import styles from "./styles.module.css";
 import cx from "../../../../../../utils/cx";
-import { readDataAt } from "../../../../../../cpu";
+import { loadAt } from "../../../../../../cpu";
 import { downloadBlob, parseAddress } from "./utils";
 import useDialog from "../../../../../../hooks/useDialog";
 
@@ -36,7 +36,7 @@ function DownloadForm() {
         }
         const filename = formData.get("filename") as string;
 
-        const blob = new Blob([readDataAt(address, length)]);
+        const blob = new Blob([loadAt(address, length)]);
         downloadBlob(blob, filename);
         dialog.close();
       }}
