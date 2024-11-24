@@ -83,7 +83,7 @@ function Nav() {
           }}
         />
       </label>
-      <ReloadButton />
+      <HardResetButton />
       <ExampleButton />
       <AdvancedButton />
       <div className={styles.splitter} />
@@ -105,12 +105,12 @@ function Nav() {
   );
 }
 
-function ReloadButton() {
+function HardResetButton() {
   const hasLoaded = useAtomValue(hasLoadedAtom);
 
   return (
-    <button onClick={reload} disabled={!hasLoaded} className={styles.navButton}>
-      Reload
+    <button onClick={hardReset} disabled={!hasLoaded} className={styles.navButton}>
+      Hard Reset
     </button>
   );
 }
@@ -139,9 +139,9 @@ function AdvancedButton() {
       title="Advanced"
       buttons={[
         {
-          title: "Hard reset",
+          title: "Reload",
           disabled: !hasLoaded,
-          onClick: hardReset,
+          onClick: reload,
         },
         {
           title: "Download",
