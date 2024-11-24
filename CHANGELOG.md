@@ -4,8 +4,11 @@ Add new features here, everything will be added at the end to the changelog when
 
 # vX.X.X
 ## Added
+- Added a hard reset button to get a new board 
 
 ## Changed
+- Made it so that load and reset by default doesn't overwrite the memory
+- Moved reload button into the advanced menu
 
 ## Fixed
 - Allow uploading same binary multiple times
