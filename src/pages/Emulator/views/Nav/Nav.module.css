@@ -51,6 +51,57 @@
   background-color: var(--color-background-hover);
 }
 
+.popoutContainer {
+  display: none;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  padding: 12px;
+  position: absolute;
+  flex-direction: column;
+  transform: translateY(100%);
+  bottom: 0px;
+  left: -1px;
+  z-index: 10;
+  width: 300px;
+}
+
+.popoutContainer.active {
+  display: block;
+}
+
+.formInput {
+  font-family: monospace;
+  background-color: var(--color-background-alt);
+  border: 1px solid var(--color-border);
+  color: white;
+  border-radius: 0;
+  outline: 0;
+  padding: 5px 12px;
+  margin: 0px 12px;
+  width: 125px;
+  height: 33px;
+}
+
+.formLabel {
+  display: inline-block;
+  width: 70px;
+}
+
+.uploadInput {
+  margin-top: 10px;
+  margin-left: 13px;
+  width: 180px;
+}
+
+.formButton {
+  background-color: var(--color-background-alt);
+  border: 1px solid var(--color-border);
+  color: white;
+  padding: 5px 12px;
+  margin: 12px 0px;
+  cursor: pointer;
+}
+
 .navButton:hover {
   background-color: var(--color-background-hover);
 }
