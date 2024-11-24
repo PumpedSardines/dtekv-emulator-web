@@ -29,7 +29,7 @@
   z-index: 10;
 }
 
-.example.active  {
+.example.active {
   display: flex;
 }
 
@@ -56,6 +56,13 @@
 .navButton:hover {
   background-color: var(--color-background-hover);
 }
+
+.navButton[disabled] {
+  cursor: not-allowed;
+  color: var(--color-text-disabled);
+  background-color: var(--color-background);
+}
+
 
 .navButton.right {
   border-right: unset;

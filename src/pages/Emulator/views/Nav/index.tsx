@@ -1,7 +1,7 @@
 import cx from "../../../../utils/cx";
 
 import styles from "./Nav.module.css";
-import { softReset, loadBinary, reload, softLoadBinary } from "../../../../cpu";
+import { hardReset, loadBinary, reload } from "../../../../cpu";
 import { CHANGELOG_URL, GITHUB_URL } from "../../../../consts";
 import NavDropDownButton from "./helpers/NavDropDownButton";
 import { useAtomValue } from "jotai";
@@ -83,9 +83,7 @@ function Nav() {
           }}
         />
       </label>
-      <button onClick={reload} className={styles.navButton}>
-        Reload
-      </button>
+      <HardResetButton />
       <ExampleButton />
       <AdvancedButton />
       <div className={styles.splitter} />
@@ -107,6 +105,16 @@ function Nav() {
   );
 }
 
+function HardResetButton() {
+  const hasLoaded = useAtomValue(hasLoadedAtom);
+
+  return (
+    <button onClick={hardReset} disabled={!hasLoaded} className={styles.navButton}>
+      Hard Reset
+    </button>
+  );
+}
+
 function ExampleButton() {
   return (
     <NavDropDownButton
@@ -114,6 +122,7 @@ function ExampleButton() {
       buttons={examples.map(({ name, bin }) => ({
         title: name,
         onClick: async () => {
+          hardReset();
           loadBinary(await bin);
         },
       }))}
@@ -130,21 +139,9 @@ function AdvancedButton() {
       title="Advanced"
       buttons={[
         {
-          title: "Soft Load",
-          onClick: () => {
-            const input = document.createElement("input");
-            input.type = "file";
-            input.click();
-            input.addEventListener("change", async (e) => {
-              const file = (e.target as HTMLInputElement).files![0];
-              const bin = new Uint8Array(await file.arrayBuffer());
-              softLoadBinary(bin);
-            });
-          },
-        },
-        {
-          title: "Soft Reset",
-          onClick: softReset,
+          title: "Reload",
+          disabled: !hasLoaded,
+          onClick: reload,
         },
         {
           title: "Download",

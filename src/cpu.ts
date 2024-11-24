@@ -10,6 +10,7 @@ import {
   switchesAtom,
   uartCallbacksAtom,
   vgaBufferAtom,
+  cpuHardResetCallbacksAtom,
 } from "./atoms";
 
 init_panic_hook();
@@ -110,31 +111,17 @@ function cpuLoop() {
   requestAnimationFrame(cpuLoop);
 }
 
-export function softReset() {
-  if (currentLoadedBinary) {
-    currentLoadedBinary = new Uint8Array(currentLoadedBinary);
-    cpu.load(new Uint8Array(currentLoadedBinary));
-    cpu.reset();
-    const loadCallbacks = store.get(cpuLoadCallbacksAtom);
-    loadCallbacks.forEach((cb) => cb());
-    store.set(vgaBufferAtom, cpu.get_vga_frame_buffer());
-    store.set(hasLoadedAtom, true);
-  }
-}
-
-export function softLoadBinary(binary: Uint8Array) {
-  currentLoadedBinary = new Uint8Array(binary);
-  cpu.load(new Uint8Array(binary));
-  cpu.reset();
-  const loadCallbacks = store.get(cpuLoadCallbacksAtom);
-  loadCallbacks.forEach((cb) => cb());
-  store.set(vgaBufferAtom, cpu.get_vga_frame_buffer());
-  store.set(hasLoadedAtom, true);
+export function hardReset() {
+  cpu.set_to_new();
+  store.set(hasLoadedAtom, false);
+  currentLoadedBinary = null;
+  store.get(cpuHardResetCallbacksAtom).forEach((callback) => {
+    callback();
+  });
 }
 
 export function loadBinary(binary: Uint8Array) {
   currentLoadedBinary = new Uint8Array(binary);
-  cpu.set_to_new();
   cpu.load(new Uint8Array(binary));
   cpu.reset();
   const loadCallbacks = store.get(cpuLoadCallbacksAtom);
