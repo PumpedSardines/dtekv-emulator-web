@@ -6,4 +6,7 @@ import topLevelAwait from "vite-plugin-top-level-await";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), wasm(), topLevelAwait()],
+  define: {
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
+  },
 });
