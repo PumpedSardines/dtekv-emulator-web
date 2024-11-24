@@ -3,6 +3,9 @@
 }
 
 :root {
+  --font-family: 'Lato', sans-serif;
+  --font-family-mono: 'Ubuntu Mono', monospace;
+
   --color-hex-display-on: #f00;
   --color-hex-display-off: #522;
   --color-hex-display-background: #333;
@@ -44,5 +47,7 @@ body {
   overflow: hidden;
   background-color: var(--color-background);
   color: var(--color-text);
-  font-family: sans-serif;
+  font-family: var(--font-family);
+  font-weight: 700;
+  line-height: 1;
 }

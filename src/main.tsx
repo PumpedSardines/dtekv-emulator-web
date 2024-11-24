@@ -2,6 +2,8 @@ import * as ReactDOM from "react-dom/client";
 import * as jotai from "jotai";
 
 import "./global.css";
+import "./fonts.css";
+
 import Emulator from "./pages/Emulator";
 import { store } from "./atoms";
 

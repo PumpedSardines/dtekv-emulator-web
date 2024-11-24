@@ -1,7 +1,7 @@
 .main {
   display: grid;
   grid-template:
-    "nav nav nav" 30px
+    "nav nav nav" 32px
     "vga vga uart" auto
     "footer footer footer" 150px / 1fr 1fr 1fr;
   height: 100vh;
