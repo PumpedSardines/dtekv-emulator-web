@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef  } from "react";
 import styles from "./styles.module.css";
 import cx from "../../../../../../utils/cx";
-import { loadDataAt, readDataAt } from "../../../../../../cpu";
+import { readDataAt } from "../../../../../../cpu";
 import { downloadBlob, parseAddress } from "./utils";
 import useDialog from "../../../../../../hooks/useDialog";
 
