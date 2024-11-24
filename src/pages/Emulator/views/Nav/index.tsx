@@ -1,11 +1,7 @@
 import cx from "../../../../utils/cx";
 
 import styles from "./Nav.module.css";
-import {
-  softReset,
-  loadBinary,
-  reload,
-} from "../../../../cpu";
+import { softReset, loadBinary, reload, softLoadBinary } from "../../../../cpu";
 import { GITHUB_URL } from "../../../../consts";
 import NavDropDownButton from "./helpers/NavDropDownButton";
 import { useAtomValue } from "jotai";
@@ -122,21 +118,34 @@ function AdvancedButton() {
       title="Advanced"
       buttons={[
         {
-          title: "Soft reset",
+          title: "Soft Load",
+          onClick: () => {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.click();
+            input.addEventListener("change", async (e) => {
+              const file = (e.target as HTMLInputElement).files![0];
+              const bin = new Uint8Array(await file.arrayBuffer());
+              softLoadBinary(bin);
+            });
+          },
+        },
+        {
+          title: "Soft Reset",
           onClick: softReset,
         },
         {
           title: "Download",
           disabled: !hasLoaded,
           onClick: () => {
-            openDialog(<DowloadForm />)
+            openDialog(<DowloadForm />);
           },
         },
         {
           title: "Upload",
           disabled: !hasLoaded,
           onClick: () => {
-            openDialog(<UploadForm />)
+            openDialog(<UploadForm />);
           },
         },
       ]}

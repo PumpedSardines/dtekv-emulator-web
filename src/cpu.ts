@@ -122,6 +122,16 @@ export function softReset() {
   }
 }
 
+export function softLoadBinary(binary: Uint8Array) {
+  currentLoadedBinary = new Uint8Array(binary);
+  cpu.load(new Uint8Array(binary));
+  cpu.reset();
+  const loadCallbacks = store.get(cpuLoadCallbacksAtom);
+  loadCallbacks.forEach((cb) => cb());
+  store.set(vgaBufferAtom, cpu.get_vga_frame_buffer());
+  store.set(hasLoadedAtom, true);
+}
+
 export function loadBinary(binary: Uint8Array) {
   currentLoadedBinary = new Uint8Array(binary);
   cpu.set_to_new();
