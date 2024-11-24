@@ -6,8 +6,10 @@ Add new features here, everything will be added at the end to the changelog when
 ## Added
 
 ## Changed
+- Update core module and change names of internal modules
 
 ## Fixed
+- Allows loading data into VGA buffer and not only sdram
 
 -->
 
