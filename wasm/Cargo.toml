@@ -3,7 +3,6 @@ name = "dtekv_emulator_web"
 version = "0.1.0"
 edition = "2021"
 
-
 [lib]
 crate-type = ["cdylib", "rlib"]
 
@@ -11,7 +10,7 @@ crate-type = ["cdylib", "rlib"]
 default = ["console_error_panic_hook"]
 
 [dependencies]
-dtekv_emulator_core = { git = "https://github.com/PumpedSardines/dtekv-emulator-core", rev="6f54ff44494c084365caa75975f91bd0cb663644" }
+dtekv_emulator_core = { git = "https://github.com/PumpedSardines/dtekv-emulator-core", rev="cdddf237f900fe5d2db42c2b64aa56c77670dbe9" }
 wasm-bindgen = "0.2.95"
 console_error_panic_hook = { version = "0.1.7", optional = true }
 web-sys = "0.3.72"

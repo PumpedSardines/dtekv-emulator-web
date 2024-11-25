@@ -167,13 +167,12 @@ impl Cpu {
     }
 
     pub fn store_at(&mut self, addr: u32, data: Vec<u8>) {
-        let _ = self.internal_cpu.bus.store_at(addr, data);
+        let _ = self.internal_cpu.store_at(addr, data);
     }
 
     pub fn load_at(&self, addr: u32, length: usize) -> Result<Vec<u8>, JsError> {
         let data = self
             .internal_cpu
-            .bus
             .load_at(addr, length)
             .map_err(|_| JsError::new("Out of range"))?;
         Ok(data)
