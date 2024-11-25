@@ -97,12 +97,12 @@ function flushUart() {
   }
 }
 
-const fps = 60;
-const timePerFrame = 1000 / fps;
+let fps = 60;
 let currentFrequency = 0;
 let start = performance.now();
 let cycles = 50_000;
-const desiredCycles = 500_000;
+const desiredCycles = 30_000_000;
+let intermediateFps = 0;
 
 function cpuLoop() {
   if (!store.get(hasLoadedAtom)) {
@@ -110,6 +110,8 @@ function cpuLoop() {
     return;
   }
   const startOfLoop = performance.now();
+  const timePerFrame = 1000 / fps;
+  intermediateFps++;
 
   updateButton();
   updateSwitches();
@@ -126,14 +128,16 @@ function cpuLoop() {
   if (performance.now() - start > 1000) {
     store.set(clockFrequencyAtom, currentFrequency);
     currentFrequency = 0;
-    start = start + 1000;
+    fps = intermediateFps;
+    intermediateFps = 0;
+    start = performance.now();
   }
 
   const endOfLoop = performance.now();
   const timeTook = endOfLoop - startOfLoop;
 
   if (timeTook < timePerFrame) {
-    cycles = Math.min(desiredCycles, Math.floor(cycles * 1.1));
+    cycles = Math.min(desiredCycles / fps, Math.floor(cycles * 1.1));
   } else {
     cycles = Math.max(1, Math.floor(cycles * 0.9));
   }
