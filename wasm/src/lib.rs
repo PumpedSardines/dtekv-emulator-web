@@ -146,7 +146,6 @@ impl Cpu {
 
     pub fn reset(&mut self) {
         self.internal_cpu.reset();
-        self.internal_cpu.pc = 4;
     }
 
     pub fn handle_interrupt(&mut self) {
