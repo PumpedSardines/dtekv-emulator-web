@@ -14,9 +14,10 @@ import RatioBox from "../../components/RatioBox";
 
 import cx from "../../utils/cx";
 import useIsSafari from "../../hooks/useIsSafari";
-import { hasLoadedAtom } from "../../atoms";
+import { clockFrequencyAtom, hasLoadedAtom } from "../../atoms";
 
 import styles from "./Emulator.module.css";
+import { feqParser } from "../../utils/feqParser";
 
 function Emulator() {
   const isSafari = useIsSafari();
@@ -27,6 +28,7 @@ function Emulator() {
         <Nav />
       </nav>
       <section className={styles["vga"]}>
+        <FrequencyCounter />
         <RatioBox width={320} height={240}>
           <VgaNotRunning />
         </RatioBox>
@@ -47,6 +49,16 @@ function Emulator() {
       </footer>
     </main>
   );
+}
+
+function FrequencyCounter() {
+  const frequency = useAtomValue(clockFrequencyAtom);
+  const hasLoaded = useAtomValue(hasLoadedAtom);
+
+  if (!hasLoaded) {
+    return null;
+  }
+  return <p className={styles.frequency}>{feqParser(frequency)}</p>;
 }
 
 function VgaNotRunning() {

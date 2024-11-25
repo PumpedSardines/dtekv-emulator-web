@@ -11,6 +11,7 @@ import {
   uartCallbacksAtom,
   vgaBufferAtom,
   cpuHardResetCallbacksAtom,
+  clockFrequencyAtom,
 } from "./atoms";
 
 init_panic_hook();
@@ -96,17 +97,46 @@ function flushUart() {
   }
 }
 
+const fps = 60;
+const timePerFrame = 1000 / fps;
+let currentFrequency = 0;
+let start = performance.now();
+let cycles = 50_000;
+const desiredCycles = 500_000;
+
 function cpuLoop() {
+  if (!store.get(hasLoadedAtom)) {
+    requestAnimationFrame(cpuLoop);
+    return;
+  }
+  const startOfLoop = performance.now();
+
   updateButton();
   updateSwitches();
 
   cpu.handle_interrupt();
-  cpu.clock(100_000);
+  cpu.clock(cycles);
 
   updateHexDisplays();
   updateLedStrip();
   updateVgaFrameBuffer();
   flushUart();
+
+  currentFrequency += cycles;
+  if (performance.now() - start > 1000) {
+    store.set(clockFrequencyAtom, currentFrequency);
+    currentFrequency = 0;
+    start = start + 1000;
+  }
+
+  const endOfLoop = performance.now();
+  const timeTook = endOfLoop - startOfLoop;
+
+  if (timeTook < timePerFrame) {
+    cycles = Math.min(desiredCycles, Math.floor(cycles * 1.1));
+  } else {
+    cycles = Math.max(1, Math.floor(cycles * 0.9));
+  }
 
   requestAnimationFrame(cpuLoop);
 }

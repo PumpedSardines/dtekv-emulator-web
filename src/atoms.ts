@@ -4,6 +4,7 @@ import { HexDisplays, LedStrip, Switches, UartCallback, CpuLoadCallback } from "
 
 // Need to add that as there for some reason?
 export const store = createStore() as INTERNAL_PrdStore;
+export const clockFrequencyAtom = atom(0);
 
 export const dialogElementAtom = atom<React.ReactNode | null>(null);
 export const hasLoadedAtom = atom(false);

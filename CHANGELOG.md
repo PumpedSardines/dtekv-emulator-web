@@ -4,9 +4,11 @@ Add new features here, everything will be added at the end to the changelog when
 
 # vX.X.X
 ## Added
+- A clock frequency counter showing current speed
 
 ## Changed
 - Update core module and change names of internal modules
+- The clock frequency is attempted to be set as high as possible without impacting performance
 
 ## Fixed
 - Allows loading data into VGA buffer and not only sdram
