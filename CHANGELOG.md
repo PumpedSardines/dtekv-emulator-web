@@ -4,6 +4,15 @@ Add new features here, everything will be added at the end to the changelog when
 
 # vX.X.X
 ## Added
+
+## Changed
+
+## Fixed
+
+-->
+
+# v1.5.0
+## Added
 - A clock frequency counter showing current speed
 
 ## Changed
@@ -12,8 +21,6 @@ Add new features here, everything will be added at the end to the changelog when
 
 ## Fixed
 - Allows loading data into VGA buffer and not only sdram
-
--->
 
 # v1.4.2
 ## Changed
