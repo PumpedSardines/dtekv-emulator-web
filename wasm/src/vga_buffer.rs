@@ -52,11 +52,7 @@ impl VgaBuffer {
     }
 }
 
-impl io::Device<()> for VgaBuffer {
-    fn addr_range(&self) -> (u32, u32) {
-        (io::VGA_BUFFER_LOWER_ADDR, io::VGA_BUFFER_HIGHER_ADDR)
-    }
-}
+impl io::Device<()> for VgaBuffer {}
 
 impl io::Interruptable for VgaBuffer {
     fn interrupt(&self) -> Option<u32> {

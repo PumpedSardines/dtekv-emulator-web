@@ -20,10 +20,6 @@ pub struct Bus {
 }
 
 impl io::Device<()> for Bus {
-    fn addr_range(&self) -> (u32, u32) {
-        (0x0, 0xFFFF_FFFF)
-    }
-
     fn clock(&mut self) {
         self.timer.clock();
         self.vga_buffer.clock();
