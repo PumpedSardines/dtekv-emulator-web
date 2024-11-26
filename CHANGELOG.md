@@ -10,6 +10,10 @@ Add new features here, everything will be added at the end to the changelog when
 ## Fixed
 
 -->
+# v1.5.2
+## Fixed
+- Made the emulator a lot faster when accessing memory
+
 # v1.5.1
 ## Fixed
 - FPS creep where the emulator would get slower and slower
