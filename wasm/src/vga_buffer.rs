@@ -3,9 +3,6 @@ use std::{cell::RefCell, rc::Rc};
 use dtekv_emulator_core::{io, Data};
 use web_sys::js_sys::Uint8Array;
 
-pub const VGA_BUFFER_LOWER_ADDR: u32 = 0x08000000;
-pub const VGA_BUFFER_HIGHER_ADDR: u32 = 0x80257ff;
-
 pub struct VgaBuffer {
     pub buffer: Uint8Array,
     pub last_buffer_index: u32,
@@ -21,7 +18,7 @@ impl VgaBuffer {
             // Backbuffer
             // Extra space
             buffer: Uint8Array::new_with_length(320 * 240 * 3 * 3),
-            last_buffer_index: VGA_BUFFER_LOWER_ADDR,
+            last_buffer_index: io::VGA_BUFFER_LOWER_ADDR,
             dma,
         }
     }
@@ -29,14 +26,14 @@ impl VgaBuffer {
     pub fn get(&mut self) -> Uint8Array {
         let buffer = match self.dma.borrow().get_buffer() {
             // If less than 0x8000000, it's the first buffer
-            buffer if buffer < VGA_BUFFER_LOWER_ADDR => VGA_BUFFER_LOWER_ADDR,
-            buffer if buffer > VGA_BUFFER_HIGHER_ADDR => VGA_BUFFER_HIGHER_ADDR,
+            buffer if buffer < io::VGA_BUFFER_LOWER_ADDR => io::VGA_BUFFER_LOWER_ADDR,
+            buffer if buffer > io::VGA_BUFFER_HIGHER_ADDR => io::VGA_BUFFER_HIGHER_ADDR,
             buffer => buffer,
         };
 
         self.last_buffer_index = buffer;
 
-        let start = (buffer - VGA_BUFFER_LOWER_ADDR) * 3;
+        let start = (buffer - io::VGA_BUFFER_LOWER_ADDR) * 3;
         let end = start + 320 * 240 * 3;
 
         self.buffer.subarray(start, end)
@@ -57,10 +54,8 @@ impl VgaBuffer {
 
 impl io::Device<()> for VgaBuffer {
     fn addr_range(&self) -> (u32, u32) {
-        (VGA_BUFFER_LOWER_ADDR, VGA_BUFFER_HIGHER_ADDR)
+        (io::VGA_BUFFER_LOWER_ADDR, io::VGA_BUFFER_HIGHER_ADDR)
     }
-
-    fn clock(&mut self) {}
 }
 
 impl io::Interruptable for VgaBuffer {
@@ -71,7 +66,7 @@ impl io::Interruptable for VgaBuffer {
 
 impl Data<()> for VgaBuffer {
     fn load_byte(&self, addr: u32) -> Result<u8, ()> {
-        let addr = addr - VGA_BUFFER_LOWER_ADDR;
+        let addr = addr - io::VGA_BUFFER_LOWER_ADDR;
         let addr = addr * 3;
         let red = self.buffer.get_index(addr);
         let green = self.buffer.get_index(addr + 1);
@@ -81,7 +76,7 @@ impl Data<()> for VgaBuffer {
     }
 
     fn store_byte(&mut self, addr: u32, byte: u8) -> Result<(), ()> {
-        let addr = addr - VGA_BUFFER_LOWER_ADDR;
+        let addr = addr - io::VGA_BUFFER_LOWER_ADDR;
         let addr = addr * 3;
         let (red, green, blue) = self.to_color(byte);
         self.buffer.set_index(addr, red);

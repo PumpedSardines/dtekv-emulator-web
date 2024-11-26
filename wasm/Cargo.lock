@@ -36,7 +36,7 @@ dependencies = [
 [[package]]
 name = "dtekv_emulator_core"
 version = "0.1.0"
-source = "git+https://github.com/PumpedSardines/dtekv-emulator-core?rev=cdddf237f900fe5d2db42c2b64aa56c77670dbe9#cdddf237f900fe5d2db42c2b64aa56c77670dbe9"
+source = "git+https://github.com/PumpedSardines/dtekv-emulator-core?rev=524e01bdc6e9ae17c939789950f67ba592c201f0#524e01bdc6e9ae17c939789950f67ba592c201f0"
 
 [[package]]
 name = "dtekv_emulator_web"

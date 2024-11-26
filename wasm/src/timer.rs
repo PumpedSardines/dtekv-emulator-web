@@ -1,8 +1,5 @@
 use dtekv_emulator_core::{cpu, exception, io, Data};
 
-pub const TIMER_LOWER_ADDR: u32 = 0x4000020;
-pub const TIMER_HIGHER_ADDR: u32 = 0x400003f;
-
 #[derive(Clone)]
 pub struct Timer {
     period: u32,
@@ -54,7 +51,7 @@ impl Timer {
 
 impl io::Device<()> for Timer {
     fn addr_range(&self) -> (u32, u32) {
-        (TIMER_LOWER_ADDR, TIMER_HIGHER_ADDR)
+        (io::TIMER_LOWER_ADDR, io::TIMER_HIGHER_ADDR)
     }
 
     fn clock(&mut self) {
@@ -82,7 +79,7 @@ impl io::Interruptable for Timer {
 
 impl Data<()> for Timer {
     fn load_byte(&self, addr: u32) -> Result<u8, ()> {
-        let addr = addr - TIMER_LOWER_ADDR;
+        let addr = addr - io::TIMER_LOWER_ADDR;
         let part = addr / 4;
         let i = addr % 4;
 
@@ -126,7 +123,7 @@ impl Data<()> for Timer {
     }
 
     fn store_byte(&mut self, addr: u32, byte: u8) -> Result<(), ()> {
-        let addr = addr - TIMER_LOWER_ADDR;
+        let addr = addr - io::TIMER_LOWER_ADDR;
         let part = addr / 4;
         let i = addr % 4;
 
