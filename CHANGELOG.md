@@ -10,8 +10,12 @@ Add new features here, everything will be added at the end to the changelog when
 ## Fixed
 
 -->
+# v1.5.3
+## Changed
+- Updated core module
+
 # v1.5.2
-## Fixed
+## Perf
 - Made the emulator a lot faster when accessing memory
 
 # v1.5.1

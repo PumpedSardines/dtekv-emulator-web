@@ -10,7 +10,7 @@ crate-type = ["cdylib", "rlib"]
 default = ["console_error_panic_hook"]
 
 [dependencies]
-dtekv_emulator_core = { git = "https://github.com/PumpedSardines/dtekv-emulator-core", rev="524e01bdc6e9ae17c939789950f67ba592c201f0" }
+dtekv_emulator_core = { git = "https://github.com/PumpedSardines/dtekv-emulator-core", rev="a4108e0c1af741fc1aeb3dd7d7438d57d74cf864" }
 wasm-bindgen = "0.2.95"
 console_error_panic_hook = { version = "0.1.7", optional = true }
 web-sys = "0.3.72"
