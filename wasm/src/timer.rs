@@ -50,6 +50,10 @@ impl Timer {
 }
 
 impl io::Device<()> for Timer {
+    fn addr_range(&self) -> (u32, u32) {
+        (io::TIMER_LOWER_ADDR, io::TIMER_HIGHER_ADDR)
+    }
+
     fn clock(&mut self) {
         if self.running {
             let elapsed = web_sys::js_sys::Date::new_0().get_time() as u64

@@ -11,6 +11,7 @@ use vga_buffer::VgaBuffer;
 mod timer;
 use timer::Timer;
 use web_sys::js_sys::Uint8Array;
+mod bus;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -34,19 +35,7 @@ pub fn init_panic_hook() {
 #[wasm_bindgen]
 #[allow(dead_code)]
 struct Cpu {
-    cpu: cpu::Cpu<
-        cpu::Bus<
-            io::SDRam,
-            io::Button,
-            io::HexDisplay,
-            io::LEDStrip,
-            io::Switch,
-            Timer,
-            io::Uart,
-            VgaBuffer,
-            Rc<RefCell<io::VgaDma>>,
-        >,
-    >,
+    cpu: cpu::Cpu<bus::Bus>,
 }
 
 #[wasm_bindgen]
@@ -54,7 +43,7 @@ impl Cpu {
     pub fn new() -> Self {
         let vga_dma = Rc::new(RefCell::new(io::VgaDma::new()));
 
-        let bus = cpu::Bus {
+        let bus = bus::Bus {
             switch: io::Switch::new(),
             button: io::Button::new(),
             sdram: io::SDRam::new(),

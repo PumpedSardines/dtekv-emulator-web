@@ -53,7 +53,9 @@ impl VgaBuffer {
 }
 
 impl io::Device<()> for VgaBuffer {
-    fn clock(&mut self) {}
+    fn addr_range(&self) -> (u32, u32) {
+        (io::VGA_BUFFER_LOWER_ADDR, io::VGA_BUFFER_HIGHER_ADDR)
+    }
 }
 
 impl io::Interruptable for VgaBuffer {
