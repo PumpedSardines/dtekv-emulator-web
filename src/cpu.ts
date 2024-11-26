@@ -103,7 +103,6 @@ let currentFrequency = 0;
 let start = performance.now();
 const desiredCycles = 30_000_000;
 let cycles = desiredCycles / fps;
-let current = 0;
 
 function cpuLoop() {
   if (!store.get(hasLoadedAtom)) {
@@ -111,7 +110,6 @@ function cpuLoop() {
     return;
   }
   const startOfLoop = performance.now();
-  current++;
 
   updateButton();
   updateSwitches();
@@ -129,8 +127,6 @@ function cpuLoop() {
     store.set(clockFrequencyAtom, currentFrequency);
     currentFrequency = 0;
     start = performance.now();
-    console.log("FPS: ", current);
-    current = 0;
   }
 
   const endOfLoop = performance.now();

@@ -22,7 +22,7 @@ pub struct Bus {
 impl io::Device<()> for Bus {
     fn clock(&mut self) {
         self.timer.clock();
-        self.vga_buffer.clock();
+        self.vga_dma.clock();
     }
 }
 
