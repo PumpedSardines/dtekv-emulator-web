@@ -13,16 +13,23 @@ import { useRef } from "react";
 
 const examples = [
   {
-    id: "prime_counter",
-    name: "Prime counter",
-    bin: fetch("/prime_counter.bin")
+    id: "games",
+    name: "Games",
+    bin: fetch("/games.bin")
       .then((res) => res.arrayBuffer())
       .then((buf) => new Uint8Array(buf)),
   },
   {
-    id: "games",
-    name: "Games",
-    bin: fetch("/games.bin")
+    id: "bad-apple",
+    name: "Bad Apple",
+    bin: fetch("/bad_apple.bin")
+      .then((res) => res.arrayBuffer())
+      .then((buf) => new Uint8Array(buf)),
+  },
+  {
+    id: "prime_counter",
+    name: "Prime counter",
+    bin: fetch("/prime_counter.bin")
       .then((res) => res.arrayBuffer())
       .then((buf) => new Uint8Array(buf)),
   },
