@@ -10,6 +10,10 @@ Add new features here, everything will be added at the end to the changelog when
 ## Fixed
 
 -->
+# v1.5.5
+## Added
+- Bad Apple example
+
 # v1.5.4
 ## Fixed
 - Clock VGA DMA from bus and instead of VGA Buffer
