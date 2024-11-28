@@ -10,6 +10,10 @@ Add new features here, everything will be added at the end to the changelog when
 ## Fixed
 
 -->
+# v1.5.6
+## Changed
+- Reset resets the io devices, important for VGA especially
+
 # v1.5.5
 ## Added
 - Bad Apple example
