@@ -11,6 +11,12 @@ Add new features here, everything will be added at the end to the changelog when
 
 -->
 
+# v1.5.8
+
+## Changed
+
+- New Bad Apple example binary
+
 # v1.5.7
 
 ## Changed
