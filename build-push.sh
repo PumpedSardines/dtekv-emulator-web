@@ -1,5 +1,8 @@
-VERSION=$(cat package.json | jq -r '.version')
+rm -rf dist
 
-docker build --platform=linux/amd64 -t dtekv-emulator-web .
-docker tag dtekv-emulator-web "pumpedsardines/dtekv-emulator-web:$VERSION"
-docker push "pumpedsardines/dtekv-emulator-web:$VERSION"
+cd wasm
+wasm-pack build
+cd ..
+npm run build
+
+npx wrangler pages deploy --project-name dtekv dist
