@@ -10,7 +10,12 @@ function HexDisplay(props: HexDisplayProps) {
     <div className={styles.hexDisplay}>
       {new Array(8).fill(0).map((_, i) => {
         const on = (props.value & (1 << i)) === 0;
-        return <div key={i} className={cx(styles.hexSegment, on ? styles.on : styles.off)}></div>;
+        return (
+          <div
+            key={i}
+            className={cx(styles.hexSegment, on ? styles.on : styles.off)}
+          ></div>
+        );
       })}
     </div>
   );

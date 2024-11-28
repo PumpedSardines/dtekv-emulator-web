@@ -116,7 +116,11 @@ function HardResetButton() {
   const hasLoaded = useAtomValue(hasLoadedAtom);
 
   return (
-    <button onClick={hardReset} disabled={!hasLoaded} className={styles.navButton}>
+    <button
+      onClick={hardReset}
+      disabled={!hasLoaded}
+      className={styles.navButton}
+    >
       Hard Reset
     </button>
   );
