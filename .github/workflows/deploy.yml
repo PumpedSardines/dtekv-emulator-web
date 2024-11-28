@@ -10,6 +10,7 @@ jobs:
   deploy:
     name: Deploy to Cloudflare Pages
     runs-on: ubuntu-latest
+    environment: deploy
 
     steps:
     - name: Checkout code
