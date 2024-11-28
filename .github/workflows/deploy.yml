@@ -13,31 +13,31 @@ jobs:
     environment: deploy
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - uses: jetli/wasm-pack-action@v0.4.0
-      with:
-        version: 'latest'
+      - uses: jetli/wasm-pack-action@v0.4.0
+        with:
+          version: "latest"
 
-    - name: Build WASM
-      working-directory: wasm
-      run: wasm-pack build --release
+      - name: Build WASM
+        working-directory: wasm
+        run: wasm-pack build --release
 
-    - name: Install Node.js dependencies
-      run: npm ci
+      - name: Install Node.js dependencies
+        run: npm ci
 
-    - name: Run build script
-      run: npm run build
+      - name: Run build script
+        run: npm run build
 
-    - name: Authenticate Wrangler
-      uses: cloudflare/wrangler-action@v3
-      with:
-        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        command: whoami
+      - name: Authenticate Wrangler
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: whoami
 
-    - name: Publish to Cloudflare Pages
-      uses: cloudflare/wrangler-action@v3
-      with:
-        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        command: pages deploy ./dist --project-name dtekv
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: pages deploy ./dist --project-name dtekv

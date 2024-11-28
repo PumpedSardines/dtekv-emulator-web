@@ -7,9 +7,11 @@ type LedProps = {
 };
 
 function Led(props: LedProps) {
-  return <div className={styles.root}>
-    <div className={cx(styles.mid, props.on && styles.on)} />
-  </div>;
+  return (
+    <div className={styles.root}>
+      <div className={cx(styles.mid, props.on && styles.on)} />
+    </div>
+  );
 }
 
 export default React.memo(Led);

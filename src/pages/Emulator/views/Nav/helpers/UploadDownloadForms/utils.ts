@@ -13,9 +13,7 @@ export function parseAddress(str: string): number | null {
     }
   }
 
-  const addr = hex
-    ? parseInt(addrString, 16)
-    : parseInt(addrString);
+  const addr = hex ? parseInt(addrString, 16) : parseInt(addrString);
 
   if (isNaN(addr) || addr < 0) {
     return null;

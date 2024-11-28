@@ -24,11 +24,7 @@ function Switches() {
   return (
     <div className={styles.switches}>
       {new Array(10).fill(0).map((_, i) => (
-        <ControlledSwitch
-          key={i}
-          index={9 - i}
-          onClick={toggleIndex}
-        />
+        <ControlledSwitch key={i} index={9 - i} onClick={toggleIndex} />
       ))}
       <Numbers />
     </div>

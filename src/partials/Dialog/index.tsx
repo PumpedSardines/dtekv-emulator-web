@@ -27,7 +27,9 @@ function Dialog() {
 
   return (
     <dialog className={styles.dialog} ref={dialogRef}>
-      <div  ref={innerRef} className={styles.inner}>{element}</div>
+      <div ref={innerRef} className={styles.inner}>
+        {element}
+      </div>
     </dialog>
   );
 }

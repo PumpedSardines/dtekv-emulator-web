@@ -3,8 +3,8 @@
 }
 
 :root {
-  --font-family: 'Lato', sans-serif;
-  --font-family-mono: 'Ubuntu Mono', monospace;
+  --font-family: "Lato", sans-serif;
+  --font-family-mono: "Ubuntu Mono", monospace;
 
   --color-hex-display-on: #f00;
   --color-hex-display-off: #522;

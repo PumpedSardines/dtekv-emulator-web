@@ -21,7 +21,11 @@ function TooSmall() {
       </p>
       <div className={styles.splitter} />
       <div className={styles.splitter} />
-      <p><a href={GITHUB_URL} target="_blank">View project on GitHub</a></p>
+      <p>
+        <a href={GITHUB_URL} target="_blank">
+          View project on GitHub
+        </a>
+      </p>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-name: Build Check
+name: Formatting Check
 
 on:
   pull_request:
@@ -6,11 +6,11 @@ on:
       - main
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - uses: jetli/wasm-pack-action@v0.4.0
         with:
@@ -28,5 +28,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run build
-        run: npm run build
+      - name: Run fmt
+        run: npm run check:fmt
