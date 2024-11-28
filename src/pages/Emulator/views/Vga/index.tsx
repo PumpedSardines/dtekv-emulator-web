@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useRatioBox } from "../../../../components/RatioBox";
+import { useRatioBox } from "../../../../components/RatioBox/ctx";
 import { vgaBufferAtom } from "../../../../atoms";
 import { useAtomValue } from "jotai";
 
