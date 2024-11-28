@@ -128,7 +128,7 @@ function ExampleButton() {
       buttons={examples.map(({ name, bin }) => ({
         title: name,
         onClick: async () => {
-          const binData = await bin()
+          const binData = await bin();
           hardReset();
           loadBinary(binData);
         },
