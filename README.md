@@ -17,7 +17,8 @@
 - Switch
 - Timer
 - LED strip
-- VGA output
+- VGA Buffer
+- VGA Dma
 - Hex displays
 - Button interrupts
 - Switch interrupts
