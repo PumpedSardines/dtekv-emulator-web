@@ -11,6 +11,12 @@ Add new features here, everything will be added at the end to the changelog when
 
 -->
 
+# v1.5.7
+
+## Changed
+
+- Minor formatting and warnings fixed and repo changes, shouldn't affect web app
+
 # v1.5.6
 
 ## Changed
