@@ -11,62 +11,57 @@ import UploadForm from "./helpers/UploadDownloadForms/UploadForm";
 import DowloadForm from "./helpers/UploadDownloadForms/DowloadForm";
 import { useRef } from "react";
 
+const binaries = new Map<string, Uint8Array>();
+
+async function getBinary(path: string, hash?: string) {
+  const finalPath = hash ? `${path}.${hash}.bin` : `${path}.bin`;
+  if (binaries.has(finalPath)) return binaries.get(finalPath)!;
+  const res = await fetch(finalPath);
+  const buf = new Uint8Array(await res.arrayBuffer());
+  binaries.set(finalPath, buf);
+  return buf;
+}
+
 const examples = [
   {
     id: "games",
     name: "Games",
-    bin: fetch("/games.bin")
-      .then((res) => res.arrayBuffer())
-      .then((buf) => new Uint8Array(buf)),
+    bin: () => getBinary("games"),
   },
   {
     id: "bad-apple",
     name: "Bad Apple",
-    bin: fetch("/bad_apple.bin")
-      .then((res) => res.arrayBuffer())
-      .then((buf) => new Uint8Array(buf)),
+    bin: () => getBinary("bad_apple", "433379"),
   },
   {
     id: "prime_counter",
     name: "Prime counter",
-    bin: fetch("/prime_counter.bin")
-      .then((res) => res.arrayBuffer())
-      .then((buf) => new Uint8Array(buf)),
+    bin: () => getBinary("prime_counter"),
   },
   {
     id: "buffer_swap",
     name: "Buffer swap",
-    bin: fetch("/buffer_swap.bin")
-      .then((res) => res.arrayBuffer())
-      .then((buf) => new Uint8Array(buf)),
+    bin: () => getBinary("buffer_swap"),
   },
   {
     id: "labb1-time4riscv",
     name: "time4riscv",
-    bin: fetch("/labb1-time4riscv.bin")
-      .then((res) => res.arrayBuffer())
-      .then((buf) => new Uint8Array(buf)),
+    bin: () => getBinary("labb1-time4riscv"),
   },
   {
     id: "labb2-riscv32tests",
     name: "riscv32tests",
-    bin: fetch("/labb2-riscv32tests.bin")
-      .then((res) => res.arrayBuffer())
-      .then((buf) => new Uint8Array(buf)),
+    bin: () => getBinary("labb2-riscv32tests"),
   },
   {
     id: "labb3-time4timer",
     name: "time4timer",
-    bin: fetch("/labb3-time4timer.bin")
-      .then((res) => res.arrayBuffer())
-      .then((buf) => new Uint8Array(buf)),
+    bin: () => getBinary("labb3-time4timer"),
   },
   {
     id: "labb3-time4int",
     name: "time4int",
-    bin: fetch("/labb3-time4int.bin")
-      .then((res) => res.arrayBuffer())
-      .then((buf) => new Uint8Array(buf)),
+    bin: () => getBinary("labb3-time4int"),
   },
 ];
 
@@ -133,8 +128,9 @@ function ExampleButton() {
       buttons={examples.map(({ name, bin }) => ({
         title: name,
         onClick: async () => {
+          const binData = await bin()
           hardReset();
-          loadBinary(await bin);
+          loadBinary(binData);
         },
       }))}
     />

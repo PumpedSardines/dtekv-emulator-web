@@ -11,6 +11,12 @@ Add new features here, everything will be added at the end to the changelog when
 
 -->
 
+# v1.5.9
+
+## Perf
+
+- Only fetch example binary when they're accessed
+
 # v1.5.8
 
 ## Changed
