@@ -27,7 +27,7 @@ jobs:
 
     - name: Build WASM
       working-directory: wasm
-      run: wasm-pack build --release --target web
+      run: wasm-pack build --release
 
     - name: Install Node.js dependencies
       run: npm ci
