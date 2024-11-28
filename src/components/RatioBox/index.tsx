@@ -1,5 +1,6 @@
-import React, { createContext, useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./RatioBox.module.css";
+import { RatioBoxContext } from "./ctx";
 
 type RatioImageBoxProps = {
   width: number;
@@ -7,18 +8,9 @@ type RatioImageBoxProps = {
   children: React.ReactNode;
 };
 
-const RatioBoxContext = createContext<{ width: number; height: number }>({
-  width: 0,
-  height: 0,
-});
-
-export function useRatioBox() {
-  return React.useContext(RatioBoxContext);
-}
-
 function RatioImageBox(props: RatioImageBoxProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [size, setSize] = React.useState({ width: 0, height: 0 });
+  const [size, setSize] = useState({ width: 0, height: 0 });
   const { width, height } = props;
 
   const updateImgSize = useCallback(() => {

@@ -1,9 +1,8 @@
-function cx(...args: any[]): string {
+function cx(...args: (null | undefined | string | false)[]): string {
   return args
-    .filter((arg) => arg)
-    .map((arg) => (typeof arg === 'string' ? arg : Object.keys(arg).filter((key) => arg[key])))
-    .flat(Infinity)
-    .join(' ');
+    .filter((arg): arg is NonNullable<typeof arg> => !!arg)
+    .map((arg) => arg)
+    .join(" ");
 }
 
 export default cx;
