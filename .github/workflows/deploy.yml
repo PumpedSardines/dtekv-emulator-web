@@ -36,11 +36,13 @@ jobs:
       run: npm run build
 
     - name: Authenticate Wrangler
-      env:
-        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      run: wrangler whoami
+      uses: cloudflare/wrangler-action@v3
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        command: whoami
 
     - name: Publish to Cloudflare Pages
-      env:
-        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      run: wrangler pages deploy ./dist --project-name dtekv
+      uses: cloudflare/wrangler-action@v3
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        command: pages deploy ./dist --project-name dtekv
