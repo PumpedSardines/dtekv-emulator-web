@@ -66,6 +66,19 @@ impl Cpu {
         *self = Cpu::new();
     }
 
+    pub fn reset_io_devices(&mut self) {
+        self.cpu.bus.switch = io::Switch::new();
+        self.cpu.bus.button = io::Button::new();
+        self.cpu.bus.hex_display = io::HexDisplay::new();
+        self.cpu.bus.uart = io::Uart::new();
+        self.cpu.bus.timer = Timer::new();
+        self.cpu.bus.led_strip = io::LEDStrip::new();
+
+        let vga_dma = Rc::new(RefCell::new(io::VgaDma::new()));
+        self.cpu.bus.vga_dma = vga_dma.clone();
+        self.cpu.bus.vga_buffer = VgaBuffer::new(vga_dma.clone());
+    }
+
     pub fn get_vga_frame_buffer(&mut self) -> Uint8Array {
         self.cpu.bus.vga_buffer.get()
     }
