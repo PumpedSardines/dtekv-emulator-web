@@ -153,6 +153,7 @@ export function hardReset() {
 
 export function loadBinary(binary: Uint8Array) {
   currentLoadedBinary = new Uint8Array(binary);
+  cpu.reset_io_devices();
   cpu.store_at(0, new Uint8Array(binary));
   cpu.reset();
   const loadCallbacks = store.get(cpuLoadCallbacksAtom);
