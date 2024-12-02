@@ -1,11 +1,11 @@
 {
   "name": "dtekv-emulator-web",
   "private": true,
-  "version": "1.5.11",
+  "version": "1.5.12",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && echo -n \"$(cat package.json | jq -r '.version')\" > dist/version.txt",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "fmt": "prettier . --write",
