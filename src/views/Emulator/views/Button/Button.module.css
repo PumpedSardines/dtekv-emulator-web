@@ -11,7 +11,7 @@
 .button:hover .innerButton {
   background-color: var(--color-io-button-clickable-area-hover);
 }
-.button:active .innerButton {
+.button.active .innerButton {
   background-color: var(--color-io-button-clickable-area-pressed);
 }
 

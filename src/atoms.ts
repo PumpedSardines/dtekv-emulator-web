@@ -6,9 +6,14 @@ import {
   Switches,
   UartCallback,
   CpuLoadCallback,
+  View,
+  ButtonBehavior,
 } from "./types";
+import { atomWithStorage } from "jotai/utils";
 
 // Need to add that as there for some reason?
+export const viewAtom = atom<View>("emulator");
+
 export const store = createStore() as INTERNAL_PrdStore;
 export const clockFrequencyAtom = atom(30_000_000);
 
@@ -28,3 +33,8 @@ export const cpuLoadCallbacksAtom = atom<CpuLoadCallback[]>([]);
 export const cpuHardResetCallbacksAtom = atom<CpuLoadCallback[]>([]);
 
 export const uartCallbacksAtom = atom<UartCallback[]>([]);
+
+export const settingsButtonBehaviorAtom = atomWithStorage<ButtonBehavior>(
+  "settingsButtonBehavior",
+  "momentary",
+);

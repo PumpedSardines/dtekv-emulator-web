@@ -1,3 +1,8 @@
+.wrapper {
+  position: relative;
+  height: 100%;
+}
+
 .navButton {
   all: unset;
   cursor: pointer;
@@ -13,46 +18,6 @@
   user-select: none;
 }
 
-.wrapper {
-  position: relative;
-  height: 100%;
-}
-
-.example {
-  display: none;
-  position: absolute;
-  flex-direction: column;
-  transform: translateY(100%);
-  bottom: -1px;
-  left: -1px;
-  width: calc(100% + 1px);
-  z-index: 10;
-}
-
-.example.active {
-  display: flex;
-}
-
-.example button {
-  all: unset;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  padding-left: 12px;
-  justify-content: flex-start;
-  background-color: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-top: unset;
-  height: 30px;
-  width: 100%;
-  user-select: none;
-  cursor: pointer;
-}
-
-.example button:hover {
-  background-color: var(--color-background-hover);
-}
-
 .navButton:hover {
   background-color: var(--color-background-hover);
 }
@@ -66,6 +31,48 @@
 .navButton.right {
   border-right: unset;
   border-left: 1px solid var(--color-border);
+}
+
+.dropDown {
+  display: none;
+  position: absolute;
+  flex-direction: column;
+  transform: translateY(100%);
+  bottom: -1px;
+  left: -1px;
+  width: calc(100% + 1px);
+  min-width: max-content;
+  z-index: 10;
+}
+
+.dropDown.open {
+  display: flex;
+}
+
+.dropDown .navButton {
+  all: unset;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 12px;
+  justify-content: flex-start;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-top: unset;
+  height: 30px;
+  width: 100%;
+  user-select: none;
+  cursor: pointer;
+}
+
+.dropDown .navButton:hover {
+  background-color: var(--color-background-hover);
+}
+
+.dropDown .navButton[disabled] {
+  cursor: not-allowed;
+  color: var(--color-text-disabled);
+  background-color: var(--color-background);
 }
 
 .splitter {

@@ -1,0 +1,17 @@
+.layout {
+  display: grid;
+  grid-template:
+    "nav" var(--navbar-height)
+    "main" auto / 1fr;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.navbar {
+  display: flex;
+  border-bottom: solid 1px var(--color-border);
+}
+
+.navbar.safari {
+  border-top: solid 1px var(--color-border);
+}

@@ -11,6 +11,17 @@ Add new features here, everything will be added at the end to the changelog when
 
 -->
 
+# v1.6.0
+
+## Added
+
+- Settings menu where you can toggle settings
+- Settings to allow toggling the button instead of pushing
+
+## Changed
+
+- Major refactor and change of code
+
 # v1.5.12
 
 ## Added

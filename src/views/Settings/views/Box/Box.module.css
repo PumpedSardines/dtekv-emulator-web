@@ -1,0 +1,29 @@
+.box {
+  width: 100%;
+  border-top: solid 1px var(--color-border);
+  padding: 16px 0;
+  margin-top: 16px;
+  display: flex;
+  gap: 16px;
+}
+
+.box > section {
+  flex: 1;
+}
+
+.textContent p {
+  margin: 0;
+  font-size: 0.875rem;
+} 
+.textContent h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+} 
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

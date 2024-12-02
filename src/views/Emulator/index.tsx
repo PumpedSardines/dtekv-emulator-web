@@ -12,42 +12,38 @@ import LedStrip from "./views/LedStrip";
 
 import RatioBox from "../../components/RatioBox";
 
-import cx from "../../utils/cx";
-import useIsSafari from "../../hooks/useIsSafari";
 import { clockFrequencyAtom, hasLoadedAtom } from "../../atoms";
 
 import styles from "./Emulator.module.css";
 import { feqParser } from "../../utils/feqParser";
+import Layout from "../../partials/Layout";
 
 function Emulator() {
-  const isSafari = useIsSafari();
-
   return (
-    <main className={styles["main"]}>
-      <nav className={cx(styles["nav"], isSafari && styles["safari"])}>
-        <Nav />
-      </nav>
-      <section className={styles["vga"]}>
-        <FrequencyCounter />
-        <RatioBox width={320} height={240}>
-          <VgaNotRunning />
-        </RatioBox>
-      </section>
-      <section className={styles["uart"]}>
-        <Uart />
-      </section>
-      <footer className={styles["footer"]}>
-        <HexDisplays />
-        <div className={styles.splitter} />
-        <div className={styles.switchLedBox}>
-          <div className={styles.led}>
-            <LedStrip />
+    <Layout navbar={<Nav />}>
+      <div className={styles["main"]}>
+        <section className={styles["vga"]}>
+          <FrequencyCounter />
+          <RatioBox width={320} height={240}>
+            <VgaNotRunning />
+          </RatioBox>
+        </section>
+        <section className={styles["uart"]}>
+          <Uart />
+        </section>
+        <footer className={styles["footer"]}>
+          <HexDisplays />
+          <div className={styles.splitter} />
+          <div className={styles.switchLedBox}>
+            <div className={styles.led}>
+              <LedStrip />
+            </div>
+            <Switches />
           </div>
-          <Switches />
-        </div>
-        <Button />
-      </footer>
-    </main>
+          <Button />
+        </footer>
+      </div>
+    </Layout>
   );
 }
 
