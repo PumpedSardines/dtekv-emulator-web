@@ -12,11 +12,11 @@ function Uart() {
 
       switch (event.type) {
         case "write": {
-          textarea.value += event.content;
-          if (
+          const shouldScrollAfterWrite =
             textarea.scrollTop >=
-            textarea.scrollHeight - textarea.clientHeight - 50
-          ) {
+            textarea.scrollHeight - textarea.clientHeight - 50;
+          textarea.value += event.content;
+          if (shouldScrollAfterWrite) {
             textarea.scrollTop = textarea.scrollHeight;
           }
           break;
