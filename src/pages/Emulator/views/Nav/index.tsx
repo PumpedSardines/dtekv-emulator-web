@@ -10,7 +10,11 @@ import useDialog from "../../../../hooks/useDialog";
 import UploadForm from "./helpers/UploadDownloadForms/UploadForm";
 import DowloadForm from "./helpers/UploadDownloadForms/DowloadForm";
 import { useRef, useState } from "react";
-import { FileHandle, getFileHandle, hasFileSystemApi } from "../../../../utils/fileSystem";
+import {
+  FileHandle,
+  getFileHandle,
+  hasFileSystemApi,
+} from "../../../../utils/fileSystem";
 
 const binaries = new Map<string, Uint8Array>();
 
