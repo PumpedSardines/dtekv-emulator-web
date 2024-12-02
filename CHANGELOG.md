@@ -11,6 +11,20 @@ Add new features here, everything will be added at the end to the changelog when
 
 -->
 
+# v1.5.10
+
+## Added
+
+- Refresh file on chrome browser
+
+## Fixed
+
+- Update core module version
+
+## Changed
+
+- Switched place of hard reset and reload
+
 # v1.5.9
 
 ## Perf

@@ -20,6 +20,12 @@ jobs:
         with:
           version: "latest"
 
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl pkg-config libssl-dev build-essential
+          npm install -g wrangler
+
       - name: Build WASM
         working-directory: wasm
         run: wasm-pack build --release
