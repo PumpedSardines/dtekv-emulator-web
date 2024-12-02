@@ -9,9 +9,7 @@ function ShouldUpdate() {
       <p>Refresh page to access the new version</p>
       <div className={styles.splitter} />
       <p>
-        <a onClick={() => window.location.reload()}>
-           Refresh
-        </a>
+        <a onClick={() => window.location.reload()}>Refresh</a>
       </p>
     </div>
   );
