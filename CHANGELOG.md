@@ -11,6 +11,12 @@ Add new features here, everything will be added at the end to the changelog when
 
 -->
 
+# v1.5.11
+
+## Fixed
+
+- Uart Scroll Bug
+
 # v1.5.10
 
 ## Added
