@@ -14,12 +14,12 @@
 .textContent p {
   margin: 0;
   font-size: 0.875rem;
-} 
+}
 .textContent h2 {
   margin: 0;
   font-size: 1.25rem;
   margin-bottom: 8px;
-} 
+}
 
 .content {
   display: flex;

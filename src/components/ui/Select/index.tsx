@@ -1,6 +1,6 @@
 import React from "react";
 
-import ChevronIcon from "../../../assets/chevron.svg?react"
+import ChevronIcon from "../../../assets/chevron.svg?react";
 
 import styles from "./Select.module.css";
 

@@ -10,7 +10,6 @@ import { settingsButtonBehaviorAtom } from "../../atoms";
 import type { ButtonBehavior } from "../../types";
 
 function Settings() {
-
   return (
     <Layout navbar={<Nav />}>
       <div className={styles.main}>

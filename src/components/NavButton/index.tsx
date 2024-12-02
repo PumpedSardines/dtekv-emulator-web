@@ -49,10 +49,16 @@ const DropDown = React.memo(function DropDown(props: NavDropDownProps) {
         className={cx(styles.dropDown, open && styles.open)}
       >
         {props.buttons.map((props) => {
-          return <Button {...props} key={props.key} onClick={() => {
-              props.onClick?.();
-              setOpen(false);
-          }} />;
+          return (
+            <Button
+              {...props}
+              key={props.key}
+              onClick={() => {
+                props.onClick?.();
+                setOpen(false);
+              }}
+            />
+          );
         })}
       </div>
     </div>

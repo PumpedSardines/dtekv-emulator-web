@@ -6,9 +6,13 @@ import { viewAtom } from "../../../../atoms";
 function Nav() {
   const setView = useSetAtom(viewAtom);
 
-  return <>
-    <NavButton onClick={() => setView("emulator")}>Back to Emulator</NavButton>
-  </>
+  return (
+    <>
+      <NavButton onClick={() => setView("emulator")}>
+        Back to Emulator
+      </NavButton>
+    </>
+  );
 }
 
 export default React.memo(Nav);
