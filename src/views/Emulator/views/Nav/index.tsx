@@ -1,20 +1,18 @@
-import cx from "../../../../utils/cx";
-
 import styles from "./Nav.module.css";
 import { hardReset, loadBinary, reload } from "../../../../cpu";
 import { CHANGELOG_URL, GITHUB_URL } from "../../../../consts";
-import NavDropDownButton from "./helpers/NavDropDownButton";
-import { useAtomValue } from "jotai";
-import { hasLoadedAtom } from "../../../../atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import { hasLoadedAtom, viewAtom } from "../../../../atoms";
 import useDialog from "../../../../hooks/useDialog";
 import UploadForm from "./helpers/UploadDownloadForms/UploadForm";
 import DowloadForm from "./helpers/UploadDownloadForms/DowloadForm";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   FileHandle,
   getFileHandle,
   hasFileSystemApi,
 } from "../../../../utils/fileSystem";
+import NavButton from "../../../../components/NavButton";
 
 const binaries = new Map<string, Uint8Array>();
 
@@ -40,7 +38,7 @@ const examples = [
   },
   {
     id: "prime_counter",
-    name: "Prime counter",
+    name: "Prime Counter",
     bin: () => getBinary("prime_counter"),
   },
   {
@@ -50,48 +48,42 @@ const examples = [
   },
   {
     id: "labb1-time4riscv",
-    name: "time4riscv",
+    name: "Labb 1 - time4riscv",
     bin: () => getBinary("labb1-time4riscv"),
   },
   {
     id: "labb2-riscv32tests",
-    name: "riscv32tests",
+    name: "Labb 2 - riscv32tests",
     bin: () => getBinary("labb2-riscv32tests"),
   },
   {
     id: "labb3-time4timer",
-    name: "time4timer",
+    name: "Labb 3 - time4timer",
     bin: () => getBinary("labb3-time4timer"),
   },
   {
     id: "labb3-time4int",
-    name: "time4int",
+    name: "Labb 3 - time4int",
     bin: () => getBinary("labb3-time4int"),
   },
 ];
 
 function Nav() {
+  const setView = useSetAtom(viewAtom);
+
   return (
     <>
       {hasFileSystemApi() ? <FileInputButton /> : <LegacyInputButton />}
-      <ReloadButton />
       <ExampleButton />
       <AdvancedButton />
+      <NavButton onClick={() => setView("settings")}>Settings</NavButton>
       <div className={styles.splitter} />
-      <a
-        className={cx(styles.navButton, styles.right)}
-        href={CHANGELOG_URL}
-        target="_blank"
-      >
+      <NavButton href={CHANGELOG_URL} target="_blank" right>
         v{__APP_VERSION__}
-      </a>
-      <a
-        className={cx(styles.navButton, styles.right)}
-        href={GITHUB_URL}
-        target="_blank"
-      >
+      </NavButton>
+      <NavButton href={GITHUB_URL} target="_blank" right>
         GitHub
-      </a>
+      </NavButton>
     </>
   );
 }
@@ -99,24 +91,29 @@ function Nav() {
 // Uses input type="file" to load a binary file,
 // Works on older browsers
 function LegacyInputButton() {
-  const fileRef = useRef<HTMLInputElement>(null);
+  const hasLoaded = useAtomValue(hasLoadedAtom);
 
   return (
-    <label className={styles.navButton} htmlFor="load-nav-button">
-      Load Binary
-      <input
-        style={{ display: "none" }}
-        ref={fileRef}
-        id="load-nav-button"
-        type="file"
-        onChange={async (e) => {
-          const file = e.currentTarget.files![0];
-          const bin = new Uint8Array(await file.arrayBuffer());
-          loadBinary(bin);
-          fileRef.current!.value = "";
+    <>
+      <NavButton
+        onClick={async () => {
+          // Kinda hacky way, work with components instead of using an input element
+          const fileElement = document.createElement("input");
+          fileElement.type = "file";
+          fileElement.onchange = async (e: Event) => {
+            const file = (e.target as HTMLInputElement).files![0];
+            const bin = new Uint8Array(await file.arrayBuffer());
+            loadBinary(bin);
+          };
+          fileElement.click();
         }}
-      />
-    </label>
+      >
+        Load File
+      </NavButton>
+      <NavButton disabled={!hasLoaded} onClick={reload}>
+        Reload
+      </NavButton>
+    </>
   );
 }
 
@@ -126,21 +123,18 @@ function FileInputButton() {
 
   return (
     <>
-      <button
-        className={styles.navButton}
+      <NavButton
         onClick={async () => {
           const fileHandle = await getFileHandle();
           setFileHandle(fileHandle);
-          console.log(fileHandle);
           const file = await fileHandle.getFile();
           const bin = new Uint8Array(await file.arrayBuffer());
           loadBinary(bin);
         }}
       >
         Load File
-      </button>
-      <button
-        className={styles.navButton}
+      </NavButton>
+      <NavButton
         disabled={!hasLoaded || !fileHandle}
         onClick={async () => {
           if (!fileHandle || !hasLoaded) return;
@@ -150,27 +144,18 @@ function FileInputButton() {
         }}
       >
         Refresh File
-      </button>
+      </NavButton>
     </>
-  );
-}
-
-function ReloadButton() {
-  const hasLoaded = useAtomValue(hasLoadedAtom);
-
-  return (
-    <button onClick={reload} disabled={!hasLoaded} className={styles.navButton}>
-      Reload
-    </button>
   );
 }
 
 function ExampleButton() {
   return (
-    <NavDropDownButton
-      title="Load Example"
-      buttons={examples.map(({ name, bin }) => ({
-        title: name,
+    <NavButton
+      label="Example"
+      buttons={examples.map(({ id, name, bin }) => ({
+        key: id,
+        children: name,
         onClick: async () => {
           const binData = await bin();
           hardReset();
@@ -186,23 +171,26 @@ function AdvancedButton() {
   const { open: openDialog } = useDialog();
 
   return (
-    <NavDropDownButton
-      title="Advanced"
+    <NavButton
+      label="Advanced"
       buttons={[
         {
-          title: "Hard Reset",
+          key: 1,
+          children: "Hard Reset",
           disabled: !hasLoaded,
           onClick: hardReset,
         },
         {
-          title: "Download",
+          key: 2,
+          children: "Download Memory Section",
           disabled: !hasLoaded,
           onClick: () => {
             openDialog(<DowloadForm />);
           },
         },
         {
-          title: "Upload",
+          key: 3,
+          children: "Upload File to Memory",
           disabled: !hasLoaded,
           onClick: () => {
             openDialog(<UploadForm />);

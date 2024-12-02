@@ -1,23 +1,10 @@
 .main {
   display: grid;
   grid-template:
-    "nav nav nav" 32px
     "vga vga uart" auto
     "footer footer footer" 150px / 1fr 1fr 1fr;
-  height: 100vh;
+  height: calc(100vh - var(--navbar-height));
   width: 100vw;
-}
-
-.nav {
-  grid-area: nav;
-  background-color: var(--color-background);
-  display: flex;
-  align-items: center;
-  border-bottom: solid 1px var(--color-border);
-}
-
-.nav.safari {
-  border-top: solid 1px var(--color-border);
 }
 
 .vga {

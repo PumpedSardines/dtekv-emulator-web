@@ -1,0 +1,16 @@
+.main {
+  width: 100%;
+  height: calc(100vh - var(--navbar-height));
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.inner {
+  width: 800px;
+  margin: 0 auto;
+  margin-top: 64px;
+}
+
+.title {
+  margin-bottom: 32px;
+}

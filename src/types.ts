@@ -27,3 +27,7 @@ export type UartEvent = { type: "clear" } | { type: "write"; content: string };
 export type UartCallback = (event: UartEvent) => void;
 export type CpuLoadCallback = () => void;
 export type CpuHardResetCallback = () => void;
+
+export type View = "emulator" | "settings";
+
+export type ButtonBehavior = "momentary" | "toggle";

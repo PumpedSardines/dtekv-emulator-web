@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import useWindowDimension from "./hooks/useWindowDimensions";
 import { MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from "./consts";
 
-import Emulator from "./pages/Emulator";
-import { store } from "./atoms";
+import { store, viewAtom } from "./atoms";
 
-import TooSmall from "./pages/TooSmall";
+import TooSmall from "./views/TooSmall";
+import ShouldUpdate from "./views/ShouldUpdate";
+import Emulator from "./views/Emulator";
+
 import Dialog from "./partials/Dialog";
 import * as jotai from "jotai";
-import ShouldUpdate from "./pages/ShouldUpdate";
+import Settings from "./views/Settings";
 
 function fetchVersion(): Promise<string> {
   return fetch("/version.txt").then((res) => res.text());
@@ -47,11 +49,22 @@ function App() {
         if (isTooSmall) {
           return <TooSmall />;
         } else {
-          return <Emulator />;
+          return <View />;
         }
       })()}
     </jotai.Provider>
   );
+}
+
+function View() {
+  const view = jotai.useAtomValue(viewAtom);
+
+  switch (view) {
+    case "emulator":
+      return <Emulator />;
+    case "settings":
+      return <Settings />;
+  }
 }
 
 export default React.memo(App);

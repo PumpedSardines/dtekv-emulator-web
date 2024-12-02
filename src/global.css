@@ -3,6 +3,8 @@
 }
 
 :root {
+  --navbar-height: 32px;
+
   --font-family: "Lato", sans-serif;
   --font-family-mono: "Ubuntu Mono", monospace;
 

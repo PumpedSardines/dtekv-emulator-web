@@ -1,0 +1,28 @@
+.wrapper {
+  width: 100%;
+  position: relative;
+}
+.select {
+  all: unset;
+  width: 100%;
+  font-family: var(--font-family);
+  padding: 8px 16px;
+  background-color: var(--color-background-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.wrapper svg {
+  position: absolute;
+  fill: white;
+  width: 16px;
+  height: 16px;
+  right: 16px;
+  top: 55%;
+  transform: translateY(-50%) rotate(90deg);
+}
+.wrapper svg * {
+  fill: var(--color-text) !important;
+}
