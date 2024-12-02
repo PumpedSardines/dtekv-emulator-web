@@ -9,7 +9,8 @@ import { hasLoadedAtom } from "../../../../atoms";
 import useDialog from "../../../../hooks/useDialog";
 import UploadForm from "./helpers/UploadDownloadForms/UploadForm";
 import DowloadForm from "./helpers/UploadDownloadForms/DowloadForm";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { FileHandle, getFileHandle, hasFileSystemApi } from "../../../../utils/fileSystem";
 
 const binaries = new Map<string, Uint8Array>();
 
@@ -66,26 +67,10 @@ const examples = [
 ];
 
 function Nav() {
-  const fileRef = useRef<HTMLInputElement>(null);
-
   return (
     <>
-      <label className={styles.navButton} htmlFor="load-nav-button">
-        Load Binary
-        <input
-          style={{ display: "none" }}
-          ref={fileRef}
-          id="load-nav-button"
-          type="file"
-          onChange={async (e) => {
-            const file = e.currentTarget.files![0];
-            const bin = new Uint8Array(await file.arrayBuffer());
-            loadBinary(bin);
-            fileRef.current!.value = "";
-          }}
-        />
-      </label>
-      <HardResetButton />
+      {hasFileSystemApi() ? <FileInputButton /> : <LegacyInputButton />}
+      <ReloadButton />
       <ExampleButton />
       <AdvancedButton />
       <div className={styles.splitter} />
@@ -107,16 +92,71 @@ function Nav() {
   );
 }
 
-function HardResetButton() {
+// Uses input type="file" to load a binary file,
+// Works on older browsers
+function LegacyInputButton() {
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <label className={styles.navButton} htmlFor="load-nav-button">
+      Load Binary
+      <input
+        style={{ display: "none" }}
+        ref={fileRef}
+        id="load-nav-button"
+        type="file"
+        onChange={async (e) => {
+          const file = e.currentTarget.files![0];
+          const bin = new Uint8Array(await file.arrayBuffer());
+          loadBinary(bin);
+          fileRef.current!.value = "";
+        }}
+      />
+    </label>
+  );
+}
+
+function FileInputButton() {
+  const [fileHandle, setFileHandle] = useState<FileHandle | null>(null);
   const hasLoaded = useAtomValue(hasLoadedAtom);
 
   return (
-    <button
-      onClick={hardReset}
-      disabled={!hasLoaded}
-      className={styles.navButton}
-    >
-      Hard Reset
+    <>
+      <button
+        className={styles.navButton}
+        onClick={async () => {
+          const fileHandle = await getFileHandle();
+          setFileHandle(fileHandle);
+          console.log(fileHandle);
+          const file = await fileHandle.getFile();
+          const bin = new Uint8Array(await file.arrayBuffer());
+          loadBinary(bin);
+        }}
+      >
+        Load File
+      </button>
+      <button
+        className={styles.navButton}
+        disabled={!hasLoaded || !fileHandle}
+        onClick={async () => {
+          if (!fileHandle || !hasLoaded) return;
+          const file = await fileHandle.getFile();
+          const bin = new Uint8Array(await file.arrayBuffer());
+          loadBinary(bin);
+        }}
+      >
+        Refresh File
+      </button>
+    </>
+  );
+}
+
+function ReloadButton() {
+  const hasLoaded = useAtomValue(hasLoadedAtom);
+
+  return (
+    <button onClick={reload} disabled={!hasLoaded} className={styles.navButton}>
+      Reload
     </button>
   );
 }
@@ -146,9 +186,9 @@ function AdvancedButton() {
       title="Advanced"
       buttons={[
         {
-          title: "Reload",
+          title: "Hard Reset",
           disabled: !hasLoaded,
-          onClick: reload,
+          onClick: hardReset,
         },
         {
           title: "Download",
